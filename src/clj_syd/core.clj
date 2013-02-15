@@ -9,4 +9,4 @@
 (defn -main
   "Project E*l*r - Problem 411"
   [& args]
-  (println "Stations (count): " (count (generate-stations 22))))
+  (println "Stations: " (generate-stations 22)))
