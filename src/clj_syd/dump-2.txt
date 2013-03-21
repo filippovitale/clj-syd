@@ -1,0 +1,18 @@
+user=> (time (take 5 (generate-stations-version-1 100000)))
+"Elapsed time: 1051.048091 msecs"
+([1 1] [2 3] [59616 85281] [35136 65921] [5376 72001])
+
+user=> (time (take 5 (generate-stations-version-2 100000)))
+"Elapsed time: 0.062033 msecs"  <-- WITH DUPLICATES!!!
+([1 1] [2 3] [4 9] [8 27] [16 81])
+
+
+
+
+
+user=> (generate-station 22 0)
+[1 1]
+user=> (generate-station 22 1)
+[2 3]
+user=> (generate-station 22 3)
+[8 5]
