@@ -3,6 +3,7 @@
 
 (defn rep? [x] (= [2 3] x))
 (filter #(= [1 1] %) (generate-stations-version-3 (k->n 15)))
+(take 10 (station-generator (k->n 15)))
 
 ;(some #{7} [9 8 9 7 6])
 ;-> 7
@@ -36,3 +37,75 @@
 ; REPL => (use 'clj-quadtree.core :reload-all)
 ;         (use '[cljts.geom :as g])
 ;         (use '[cljts.analysis :as a])
+;(use 'clj-syd.core :reload-all)
+
+(def generator '( [1 1]
+                  [2 3] [4 9] [8 5] [16 15] [10 1] [20 3] [18 9] [14 5] [6 15] [12 1]
+                  [2 3] [4 9] [8 5] [16 15] [10 1] [20 3] [18 9] [14 5] [6 15] [12 1]
+                  .... ))
+
+(def infinite-lazy-sequence
+  (lazy-cat [4] (cycle [1 2 3])))
+
+(def result
+(loop
+  [input (vec generator)
+   s #{}]
+  (if (contains? s (first input))
+    s
+    (recur (rest input) (conj s (first input)))))
+)
+
+(loop
+  [input (vec generator)
+   s #{}]
+  (let [f (first input)]
+  (if (contains? s f)
+    s
+    (recur (rest input) (conj s f)))))
+
+(loop
+  [[[x y] & r] (vec generator)
+   s #{}]
+  (if (contains? s [x y])
+    s
+    (recur r (conj s [x y]))))
+
+(loop
+  [[f & r] (vec generator)
+   s #{}]
+  (if (contains? s f)
+    s
+    (recur r (conj s f))))
+(loop
+  [[f & r] (seq generator)
+   s #{}]
+  (if (contains? s f)
+    s
+    (recur r (conj s f))))
+(loop
+  [[f & r] generator
+   s #{}]
+  (if (contains? s f)
+    s
+    (recur r (conj s f))))
+;----------------------------------------
+(loop
+  [[head & tail] infinite-lazy-sequence
+   result #{}]
+  (if (contains? result head)
+    result
+    (recur tail (conj result head))))
+;----------------------------------------
+(time (count
+(loop
+  [[head & tail] (station-generator (k->n 15))
+   result #{}]
+  (if (contains? result head)
+    result
+    (recur tail (conj result head))))))
+
+(time (count
+(reduce (fn [a v] (if-not (a v) (conj a v) (reduced a)))
+    #{}
+  (station-generator (k->n 15)))))
