@@ -109,3 +109,37 @@
 (reduce (fn [a v] (if-not (a v) (conj a v) (reduced a)))
     #{}
   (station-generator (k->n 15)))))
+
+
+
+(defn r
+  "Creates a random item for insertion. Mostly for testing."
+  [max-x max-y]
+  {:id (node-count)
+   :bounds
+   {:x (rand-int max-x)
+    :y (rand-int max-y)
+    :width (+ 5 (rand-int 10))
+    :height (+ 5 (rand-int 10))}})
+
+(defn a3 [quad]
+  (reduce
+    (fn [quad i]
+      (insert quad (r 22 22)))
+    quad
+    (range 5)))
+
+;-------------------------------------------
+
+(def q22
+  (quadtree
+    {:depth 0
+     :bounds {:x 0 :y 0 :width 22 :height 22}
+     :nodes []}))
+
+(def q5
+  (reduce
+    (fn [q22 i]
+      (insert q22 (r i i)))
+    q22
+    (range 5)))
