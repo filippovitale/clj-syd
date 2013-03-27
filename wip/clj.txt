@@ -1,0 +1,110 @@
+;;; TRAMPOLINE
+(defn foo [x]
+  (if (< x 0)
+    x ;; <-- return this at the end
+    #(foo (do (println :x x) (dec x)))))
+
+user> (trampoline foo 10)
+
+
+;;; WHILE
+(def a (atom 10))
+(while (pos? @a) (do (println @a) (swap! a dec)))
+
+http://www.gettingclojure.com/cookbook:functional-programming
+
+
+
+;;;-------------------------------
+(loop [char (readChar)]
+   (if (= char delimiter)
+       '()
+       (do (some-processing)
+           (recur (readChar)))))
+;;;-------------------------------
+It seems to be the lazyness of rotate-left that causes it.  Not sure
+why it doesn't affect josephus3, but breaks josephus4, though.
+
+I tried starting java with a 60k thread stack size to make it easier
+to see the problem:
+
+java -Xss60k ...
+
+Then this fails with an n as low as 100:
+
+(defn josephus5 [N M] ;; execute every mth soldier
+
+
+  (loop [soldiers (range N)
+         n N
+         m M
+         deceased []]
+    (cond
+      (zero? n) deceased
+      :else (let [r (rotate-left soldiers n m)
+                  dead (conj deceased (first r))
+
+                  survivors (rest r)]
+              (recur survivors (dec n) m dead)))))
+but this works (obviously with the wrong results):
+
+(defn josephus6 [N M] ;; execute every mth soldier
+
+
+  (loop [soldiers (range N)
+         n N
+         m M
+         deceased []]
+    (cond
+      (zero? n) deceased
+      :else (let [r soldiers
+                  dead (conj deceased (first r))
+
+                  survivors (rest r)]
+              (recur survivors (dec n) m dead)))))
+I then changed rotate-left and updated josephus as follows:
+
+(defn rotate-left2
+  ([ln n m]
+   (doall (take n (drop (dec m) (cycle ln)))))
+
+
+  ([ln m] (rotate-left ln (count ln) m)))
+(defn josephus7 [N M] ;; execute every mth soldier
+
+
+  (loop [soldiers (range N)
+         n N
+         m M
+         deceased []]
+    (cond
+      (zero? n) deceased
+      :else (let [r (rotate-left2 soldiers n m)
+                  dead (conj deceased (first r))
+
+                  survivors (rest r)]
+              (recur survivors (dec n) m dead)))))
+;;;-------------------------------
+(fn name? [params* ] condition-map? exprs*)
+(fn name? ([params* ] condition-map? exprs*)+)
+
+
+The syntax extension also applies to to defn and other macros which expand to fn forms.
+
+Note: If the sole form following the parameter vector is a map, it is treated as the function body, and not the condition map.
+
+The condition-map parameter may be used to specify pre- and postconditions for a function. It is of the following form:
+
+{:pre [pre-expr*]
+:post [post-expr*]}
+
+where either key is optional. The condition map may also be provided as metadata of the arglist.
+
+pre-expr and post-expr are boolean expressions that may refer to the parameters of the function. In addition, % may be used in a post-expr to refer to the function's return value. If any of the conditions evaluate to false and *assert* is true, an assertion failure exception is thrown.
+
+Example:
+(defn constrained-sqr [x]
+    {:pre  [(pos? x)]
+     :post [(> % 16), (< % 225)]}
+    (* x x))
+;;;-------------------------------
