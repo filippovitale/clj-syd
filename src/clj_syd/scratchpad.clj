@@ -139,3 +139,15 @@
           [(point 1 1) (point 3 1) (point 1 4) (point 1 8) (point 1 9)]))
 
 ((first (retrieve-rect a1 (rect 0 0 22 22))) :bounds)
+
+
+;(defprotocol Q
+;  " Datastructure: A point Quad Tree for representing 2D data. Each
+;    region has the same ratio as the bounds for the tree.
+;    The implementation currently requires pre-determined bounds for data as it
+;    can not rebalance itself to that degree."
+;  (q-constructor [this] "Constructs a new quad tree")
+;  (q-root_ [this] "new goog.structs.QuadTree.Node(minX, minY, maxX - minX, maxY - minY)")
+;  (q-count_ [this] "0")
+;  (q-count_ [this] "0")
+;  (q-set [this] "Sets the value of an (x, y) point within the quad-tree."))
