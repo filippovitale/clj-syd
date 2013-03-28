@@ -25,4 +25,4 @@
 (defn -main
   "Project E*l*r - Problem 411"
   [& args]
-  (println "Stations: " (generate-stations 22)))
+  (println "Longest uphill path for n=22: " (generate-stations 22))) ; TODO !!!!!!!!!!
