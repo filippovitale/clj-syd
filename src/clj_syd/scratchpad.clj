@@ -1,6 +1,3 @@
-
-
-
 (defn rep? [x] (= [2 3] x))
 (filter #(= [1 1] %) (generate-stations-version-3 (k->n 15)))
 (take 10 (station-generator (k->n 15)))
@@ -39,30 +36,30 @@
 ;         (use '[cljts.analysis :as a])
 ;(use 'clj-syd.core :reload-all)
 
-(def generator '( [1 1]
+(def generator '([1 1]
                   [2 3] [4 9] [8 5] [16 15] [10 1] [20 3] [18 9] [14 5] [6 15] [12 1]
                   [2 3] [4 9] [8 5] [16 15] [10 1] [20 3] [18 9] [14 5] [6 15] [12 1]
-                  .... ))
+                  ....))
 
 (def infinite-lazy-sequence
   (lazy-cat [4] (cycle [1 2 3])))
 
 (def result
-(loop
-  [input (vec generator)
-   s #{}]
-  (if (contains? s (first input))
-    s
-    (recur (rest input) (conj s (first input)))))
-)
+  (loop
+    [input (vec generator)
+     s #{}]
+    (if (contains? s (first input))
+      s
+      (recur (rest input) (conj s (first input)))))
+  )
 
 (loop
   [input (vec generator)
    s #{}]
   (let [f (first input)]
-  (if (contains? s f)
-    s
-    (recur (rest input) (conj s f)))))
+    (if (contains? s f)
+      s
+      (recur (rest input) (conj s f)))))
 
 (loop
   [[[x y] & r] (vec generator)
@@ -98,17 +95,17 @@
     (recur tail (conj result head))))
 ;----------------------------------------
 (time (count
-(loop
-  [[head & tail] (station-generator (k->n 15))
-   result #{}]
-  (if (contains? result head)
-    result
-    (recur tail (conj result head))))))
+        (loop
+          [[head & tail] (station-generator (k->n 15))
+           result #{}]
+          (if (contains? result head)
+            result
+            (recur tail (conj result head))))))
 
 (time (count
-(reduce (fn [a v] (if-not (a v) (conj a v) (reduced a)))
-    #{}
-  (station-generator (k->n 15)))))
+        (reduce (fn [a v] (if-not (a v) (conj a v) (reduced a)))
+            #{}
+          (station-generator (k->n 15)))))
 
 
 
@@ -116,11 +113,10 @@
   "Creates a random item for insertion. Mostly for testing."
   [max-x max-y]
   {:id (node-count)
-   :bounds
-   {:x (rand-int max-x)
-    :y (rand-int max-y)
-    :width (+ 5 (rand-int 10))
-    :height (+ 5 (rand-int 10))}})
+   :bounds {:x (rand-int max-x)
+            :y (rand-int max-y)
+            :width (+ 5 (rand-int 10))
+            :height (+ 5 (rand-int 10))}})
 
 (defn a3 [quad]
   (reduce
@@ -131,15 +127,15 @@
 
 ;-------------------------------------------
 
+(use 'clj-quad.core :reload-all )
+
 (def q22
   (quadtree
     {:depth 0
      :bounds {:x 0 :y 0 :width 22 :height 22}
      :nodes []}))
 
-(def q5
-  (reduce
-    (fn [q22 i]
-      (insert q22 (r i i)))
-    q22
-    (range 5)))
+(def a1 (reduce insert q22
+          [(point 1 1) (point 3 1) (point 1 4) (point 1 8) (point 1 9)]))
+
+((first (retrieve-rect a1 (rect 0 0 22 22))) :bounds)

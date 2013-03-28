@@ -1,3 +1,7 @@
+(ns clj-syd.quadtree)
+
+
+
 ;QuadTree = function(minX, minY, maxX, maxY)
 
 ;goog.structs.QuadTree.prototype.set = function(x, y, value) {
