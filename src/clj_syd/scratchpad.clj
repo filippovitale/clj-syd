@@ -103,11 +103,19 @@
             (recur tail (conj result head))))))
 
 (time (count
-        (reduce (fn [a v] (if-not (a v) (conj a v) (reduced a)))
+        (reduce
+          (fn [a v] (if-not (a v) (conj a v) (reduced a)))
             #{}
           (station-generator (k->n 15)))))
 
+(time (count ; anonymous version
+        (reduce
+          #(if-not (%1 %2) (conj %1 %2) (reduced %1)) #{}
+          (station-generator (k->n 15)))))
 
+;(time (count (set (station-generator-with-duplicates (k->n 20)))))
+; very inefficient (k->n 20) => 42 seconds
+;----------------------------------------
 
 (defn r
   "Creates a random item for insertion. Mostly for testing."
@@ -138,7 +146,7 @@
 (def a1 (reduce insert q22
           [(point 1 1) (point 3 1) (point 1 4) (point 1 8) (point 1 9)]))
 
-((first (retrieve-rect a1 (rect 0 0 22 22))) :bounds)
+((first (retrieve-rect a1 (rect 0 0 22 22))) :bounds )
 
 
 ;(defprotocol Q
@@ -151,3 +159,23 @@
 ;  (q-count_ [this] "0")
 ;  (q-count_ [this] "0")
 ;  (q-set [this] "Sets the value of an (x, y) point within the quad-tree."))
+
+;(defrecord tn [v l r])
+
+;user=> (defrecord Point3 [x y])
+;user.Point3
+;user=> (def p3 (Point3. 11 12))
+;#'user/p3
+;user=> (println p3)
+;#:user.Point3{:x 11, :y 12}
+;nil
+;user=> (println (:x p3)) ; works
+;11
+;nil
+;user=> (println (.y p3)) ; also works!
+;12
+;nil
+
+
+;(for [i (range) :while (< i (inc (* 2 n)))] 10% slower
+;(for [i (range 0 (inc (* 2 n)))] faster

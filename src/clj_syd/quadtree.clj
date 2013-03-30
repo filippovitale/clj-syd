@@ -10,5 +10,8 @@
   ([qt]
     (retrieve qt [-1 -1]))
   ([qt [x y]]
-    (filter #(and (>= (first %) x) (>= (last %) y) (not= [x y] %)) qt)))
+    (filter #(and
+               (>= (first %) x)
+               (>= (last %) y)
+               (not= [x y] %)) qt)))
 ;(retrieve-stations q [1 2])
