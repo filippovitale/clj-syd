@@ -23,6 +23,7 @@
   (reduce
     #(if-not (%1 %2) (conj %1 %2) (reduced %1)) #{}
     (station-generator-with-duplicates n)))
+;https://news.ycombinator.com/item?id=5304949
 
 (defn k->n [k] (* k k k k k))
 
