@@ -1,5 +1,6 @@
 (ns clj-syd.core
-  (:use [clojure.tools.trace :only [deftrace]]))
+  (:require [clj-syd.uphill :as u]
+            [clj-syd.quadtree :as q]))
 
 (defn mod-pow
   [base n i]
@@ -28,9 +29,12 @@
 (defn solve
   [n]
   (let [qt (station-generator (k->n n))]
-    (uphill-count qt 0 [-1 -1])))
+    (u/uphill-count qt 0 [-1 -1])))
 
 (defn -main
   "Project E*l*r - Problem 411"
   [& args]
-  (println "Longest uphill path for n=22: " (solve 22)))
+  (println "Longest uphill path for k=3: " (solve 3)))
+
+;(load-file "C:/Users/filippo/Experiments/clj-syd/src/clj_syd/core.clj")
+;(use 'clj-syd.core)
