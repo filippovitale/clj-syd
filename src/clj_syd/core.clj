@@ -27,10 +27,8 @@
 
 (defn solve
   [n]
-  ; get longest path with the stations given
-  ; get the min point in the stations
-  ;  (for)
-  )
+  (let [qt (station-generator (k->n n))]
+    (uphill-count qt 0 [-1 -1])))
 
 (defn -main
   "Project E*l*r - Problem 411"

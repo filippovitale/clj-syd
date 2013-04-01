@@ -8,7 +8,7 @@
 
 (defn retrieve-stations
   ([qt]
-    (retrieve qt [-1 -1]))
+    (retrieve-stations qt [-1 -1]))
   ([qt [x y]]
     (filter #(and
                (>= (first %) x)
