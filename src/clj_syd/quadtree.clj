@@ -1,6 +1,11 @@
-(ns clj-syd.quadtree)
+(ns clj-syd.quadtree
+  (:require [clojure.core.reducers :as r]))
 
 (defn stations [size] [])
+
+(defn contain-station?
+  [qt [x y]]
+  (qt [x y]))
 
 (defn insert-station [qt [x y]]
   (conj qt [x y])) ; fake implementations to test the interface
@@ -10,6 +15,7 @@
   ([qt]
     (retrieve-stations qt [-1 -1]))
   ([qt [x y]]
+    ;(r/filter #(and
     (filter #(and
                (>= (first %) x)
                (>= (last %) y)

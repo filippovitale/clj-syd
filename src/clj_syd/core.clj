@@ -21,8 +21,10 @@
   "Generate the DISTINCT stations for n"
   [n]
   (reduce
-    #(if-not (%1 %2) (conj %1 %2) (reduced %1)) #{}
+    #(if (q/contain-station? %1 %2) (reduced %1) (q/insert-station %1 %2))
+      #{} ; TODO empty QuadTree
     (station-generator-with-duplicates n)))
+;http://clojure.github.com/clojure/clojure.core-api.html#clojure.core/reduced
 ;https://news.ycombinator.com/item?id=5304949
 
 (defn k->n [k] (* k k k k k))
@@ -33,7 +35,7 @@
     (u/uphill-count qt 0 [-1 -1])))
 
 (defn -main
-  "Project E*l*r - Problem 411"
+  "Pr*j*ct E*l*r - Pr*bl*m 411"
   [& args]
   (println "Longest uphill path for k=3: " (solve 3)))
 
