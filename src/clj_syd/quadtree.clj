@@ -30,10 +30,8 @@
   ([qt]
     (retrieve-stations qt [-1 -1]))
   ([qt [x y]]
-    (filter #(and
-               (>= (first %) x)
-               (>= (last %) y)
-               (not= [x y] %)) qt)))
+    ;TODO
+    ))
 
 (defn contain-station?
   [qt [x y]]
