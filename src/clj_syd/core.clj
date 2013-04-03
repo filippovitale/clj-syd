@@ -27,6 +27,9 @@
 ;http://clojure.github.com/clojure/clojure.core-api.html#clojure.core/reduced
 ;https://news.ycombinator.com/item?id=5304949
 
+;(station-generator 22)
+;=>  #{[16 15] [1 1] [2 3] [4 9] [6 15] [20 3] [12 1] [10 1] [14 5] [18 9] [8 5]}
+
 (defn k->n [k] (* k k k k k))
 
 (defn solve
