@@ -1,6 +1,8 @@
 (ns clj-syd.core
   (:require [clj-syd.uphill :as u]
-            [clj-syd.quadtree :as q]))
+            [clj-syd.quadtree-naive :as q]))
+
+;[clj-syd.quadtree :as q]))
 
 (defn mod-pow
   [base n i]
@@ -21,8 +23,10 @@
   "Generate the DISTINCT stations for n"
   [n]
   (reduce
-    #(if (q/contain-station? %1 %2) (reduced %1) (q/insert-station %1 %2)) ; TODO instead of q/insert-station --> conj
-      #{} ; TODO empty QuadTree q/empty
+    #(if (q/contain-station? %1 %2)
+       (reduced %1)
+       (q/insert-station %1 %2))
+    q/empty
     (station-generator-with-duplicates n)))
 ;http://clojure.github.com/clojure/clojure.core-api.html#clojure.core/reduced
 ;https://news.ycombinator.com/item?id=5304949
