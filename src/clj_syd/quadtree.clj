@@ -52,7 +52,7 @@
   ([qt]
     (retrieve-stations qt [-1 -1]))
   ([qt [x y]]
-    ;TODO
+    ; TODO
     ))
 
 (defn contain-station?
