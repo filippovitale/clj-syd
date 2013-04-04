@@ -107,8 +107,27 @@
 ;           (QuadTree. [12 1] nil nil nil nil)
 ;           nil nil)))
 
-; (def g #{[16 15] [1 1] [2 3] [4 9] [6 15] [20 3] [12 1] [10 1] [14 5] [18 9] [8 5]})
-; (pprint (reduce #(insert-station %1 %2) empty (vec g)))
+(def g #{[16 15] [1 1] [2 3] [4 9] [6 15] [20 3] [12 1] [10 1] [14 5] [18 9] [8 5]})
+(def t (reduce #(insert-station %1 %2) empty (vec g)))
+(pprint t)
+
+;                              [16 15]
+;                                 |
+;      ======================================
+;      [1 1]         [6 15]       [20 3]  nil
+;        |                           |
+; =================          =================
+; nil nil nil [2 3]          nil [18 9] nil nil
+;               |
+; ===============================
+; nil nil [12 1]            [4 9]
+;            |                |
+;  ==================  ==================
+;  nil [10 1] nil nil  nil nil [14 5] nil
+;                                 |
+;                       ==================
+;                       nil [8 5] nil nil
+
 ;{:s [16 15],
 ; :ll
 ; {:s [1 1],
@@ -152,16 +171,32 @@
 ;        gg (:gg %)]
 ;    false));(not (and (nil? ll) )))); (nil? lg) (nil? gl) (nil? gg)))))
 
-(:s (first
-      (tree-seq
-        #(let [ll (:ll %)
-               lg (:lg %)
-               gl (:gl %)
-               gg (:gg %)]
-           ;(not (and (nil? ll)))) ; (nil? lg) (nil? gl) (nil? gg)))))
-           (not (nil? ll))) ; (nil? lg) (nil? gl) (nil? gg)))))
-        #(:ll %)
-        t1)))
-
+(filter #(instance? QuadTree %)
+  (map #(:s %)
+    (tree-seq
+      #(let [ll (:ll %)
+             lg (:lg %)
+             gl (:gl %)
+             gg (:gg %)]
+         ;(not (and (nil? ll)))) ; (nil? lg) (nil? gl) (nil? gg)))))
+         (not (nil? ll))) ; (nil? lg) (nil? gl) (nil? gg)))))
+      #(:ll %)
+      t)))
 
 ;; TODO http://stackoverflow.com/a/12379141/81444
+
+
+(map #(:s %)
+  (tree-seq
+    #(not (nil? (:ll %)))
+    #(do
+       (println "-->" (:ll %) "<--")
+       (:ll %))
+    t))
+
+;(map #(:s %)
+(map #(println "-->" % "<--")
+  (tree-seq
+    #(not (nil? (:ll %)))
+    #(:ll %)
+    t))
