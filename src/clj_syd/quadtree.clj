@@ -52,8 +52,21 @@
   ([qt]
     (retrieve-stations qt [-1 -1]))
   ([qt [x y]]
-    ; TODO
-    ))
+    (let [lx (first (:s qt))
+          ly (last (:s qt))
+          ll (:ll qt)
+          lg (:lg qt)
+          gl (:gl qt)
+          gg (:gg qt)]
+      (filter
+        #(and
+           (>= (first %) x)
+           (>= (last %) y)
+           (not= [x y] %))
+        (vec #{[16 15] [1 1] [2 3] [4 9] [6 15]
+               [20 3] [12 1] [10 1] [14 5]
+               [18 9] [8 5]})) ; TODO
+      )))
 
 (defn contain-station?
   [qt [x y]]
@@ -132,3 +145,23 @@
 ;  :gg nil},
 ; :gg nil}
 ;nil
+
+;#((let [ll (:ll %)
+;        lg (:lg %)
+;        gl (:gl %)
+;        gg (:gg %)]
+;    false));(not (and (nil? ll) )))); (nil? lg) (nil? gl) (nil? gg)))))
+
+(:s (first
+      (tree-seq
+        #(let [ll (:ll %)
+               lg (:lg %)
+               gl (:gl %)
+               gg (:gg %)]
+           ;(not (and (nil? ll)))) ; (nil? lg) (nil? gl) (nil? gg)))))
+           (not (nil? ll))) ; (nil? lg) (nil? gl) (nil? gg)))))
+        #(:ll %)
+        t1)))
+
+
+;; TODO http://stackoverflow.com/a/12379141/81444

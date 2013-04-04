@@ -1,6 +1,6 @@
 (ns clj-syd.core
   (:require [clj-syd.uphill :as u]
-            [clj-syd.quadtree-naive :as q]))
+            [clj-syd.quadtreee :as q]))
 
 ;[clj-syd.quadtree :as q]))
 
