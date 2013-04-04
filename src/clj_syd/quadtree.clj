@@ -20,10 +20,32 @@
           gl (:gl qt)
           gg (:gg qt)]
       (cond
-        (and (<, x lx) (<, y ly)) (QuadTree. [lx ly] (if (nil? ll) (QuadTree. [x y] nil nil nil nil) (insert-station ll [x y])) lg gl gg)
-        (and (<, x lx) (>= y ly)) (QuadTree. [lx ly] ll (if (nil? lg) (QuadTree. [x y] nil nil nil nil) (insert-station lg [x y])) gl gg)
-        (and (>= x lx) (<, y ly)) (QuadTree. [lx ly] ll lg (if (nil? gl) (QuadTree. [x y] nil nil nil nil) (insert-station gl [x y])) gg)
-        (and (>= x lx) (>= y ly)) (QuadTree. [lx ly] ll lg gl (if (nil? gg) (QuadTree. [x y] nil nil nil nil) (insert-station gg [x y])))
+        (and (<, x lx) (<, y ly))
+        (QuadTree. [lx ly]
+          (if (nil? ll)
+            (QuadTree. [x y] nil nil nil nil)
+            (insert-station ll [x y]))
+          lg gl gg)
+
+        (and (<, x lx) (>= y ly))
+        (QuadTree. [lx ly]
+          ll (if (nil? lg)
+               (QuadTree. [x y] nil nil nil nil)
+               (insert-station lg [x y]))
+          gl gg)
+
+        (and (>= x lx) (<, y ly))
+        (QuadTree. [lx ly]
+          ll lg (if (nil? gl)
+                  (QuadTree. [x y] nil nil nil nil)
+                  (insert-station gl [x y]))
+          gg)
+
+        (and (>= x lx) (>= y ly))
+        (QuadTree. [lx ly]
+          ll lg gl (if (nil? gg)
+                     (QuadTree. [x y] nil nil nil nil)
+                     (insert-station gg [x y])))
         ))))
 
 (defn retrieve-stations
