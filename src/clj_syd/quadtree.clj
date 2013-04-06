@@ -209,7 +209,7 @@
         lg (:lg qt)
         gl (:gl qt)
         gg (:gg qt)]
-    (if (and (nil? ll) (nil? lg) (nil? gl) (nil? gg))
+    (if (and (nil? ll) (nil? lg) (nil? gl) (nil? gg)) ; REFACTOR
       false
       true)
     ))
@@ -240,9 +240,6 @@
 ;([16 15] [1 1] [2 3] [12 1] [10 1] [4 9] [14 5] [8 5] [6 15] [20 3] [18 9])
 
 
-
-
-
 ;(defn qt-children-uphill
 ;  [qt [x y]]
 ;  (let [lx (first (:s qt))
@@ -264,7 +261,7 @@
 ;      )
 ;    ))
 
-(defn qt-children-uphill
+(defn qt-children-uphill ; TODO rename somethign like possible branches with...
   [qt [x y]]
   (let [lx (first (:s qt))
         ly (last (:s qt))
@@ -273,19 +270,22 @@
         gl (:gl qt)
         gg (:gg qt)]
     (cond
-      (and (< x lx) (< y ly)) (filter #(not (nil? %)) [ll lg gl gg])
-      (and (= x lx) (= y ly)) (filter #(not (nil? %)) [ll lg gl gg])
-      (and (> x lx) (> y ly)) (filter #(not (nil? %)) [gg]))))
-
-; TODO change check as well???!?!
+      (and (<, x lx) (<, y ly)) (filter #(not (nil? %)) [ll lg gl gg])
+      (and (<, x lx) (>= y ly)) (filter #(not (nil? %)) [,, lg ,, gg])
+      (and (>= x lx) (<, y ly)) (filter #(not (nil? %)) [,, ,, gl gg])
+      :else (filter #(not (nil? %)) [gg]))))
 
 (defn retrieve-stations
   ([qt]
     (retrieve-stations qt [-1 -1]))
   ([qt [x y]]
-    ; TODO letfn
-    (tree-seq
-      qt-with-children?
-      qt-children
-      t)
-    ))
+    (letfn
+      [(uphill [qt] (qt-children-uphill qt [x y]))]
+      (filter
+        #(let
+           [lx (first %)
+            ly (last %)]
+           (and (>= lx x) (>= lx y) (not= [lx ly] [x y])))
+        (map
+          #(:s %)
+          (tree-seq qt-with-children? uphill t))))))
