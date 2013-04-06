@@ -109,7 +109,7 @@
 
 (def g #{[16 15] [1 1] [2 3] [4 9] [6 15] [20 3] [12 1] [10 1] [14 5] [18 9] [8 5]})
 (def t (reduce #(insert-station %1 %2) empty (vec g)))
-(pprint t)
+;(pprint t)
 
 ;                              [16 15]
 ;                                 |
@@ -127,6 +127,8 @@
 ;                                 |
 ;                       ==================
 ;                       nil [8 5] nil nil
+
+; (:s (:lg (:gl (:gg (:ll t)))))
 
 ;{:s [16 15],
 ; :ll
@@ -171,32 +173,119 @@
 ;        gg (:gg %)]
 ;    false));(not (and (nil? ll) )))); (nil? lg) (nil? gl) (nil? gg)))))
 
-(filter #(instance? QuadTree %)
-  (map #(:s %)
-    (tree-seq
-      #(let [ll (:ll %)
-             lg (:lg %)
-             gl (:gl %)
-             gg (:gg %)]
-         ;(not (and (nil? ll)))) ; (nil? lg) (nil? gl) (nil? gg)))))
-         (not (nil? ll))) ; (nil? lg) (nil? gl) (nil? gg)))))
-      #(:ll %)
-      t)))
+;(filter #(instance? QuadTree %)
+;  (map #(:s %)
+;    (tree-seq
+;      #(let [ll (:ll %)
+;             lg (:lg %)
+;             gl (:gl %)
+;             gg (:gg %)]
+;         ;(not (and (nil? ll)))) ; (nil? lg) (nil? gl) (nil? gg)))))
+;         (not (nil? ll))) ; (nil? lg) (nil? gl) (nil? gg)))))
+;      #(:ll %)
+;      t)))
 
 ;; TODO http://stackoverflow.com/a/12379141/81444
 
 
-(map #(:s %)
-  (tree-seq
-    #(not (nil? (:ll %)))
-    #(do
-       (println "-->" (:ll %) "<--")
-       (:ll %))
-    t))
+;(map #(:s %)
+;  (tree-seq
+;    #(not (nil? (:ll %)))
+;    #(do
+;       (println "-->" (:ll %) "<--")
+;       (:ll %))
+;    t))
 
 ;(map #(:s %)
-(map #(println "-->" % "<--")
-  (tree-seq
-    #(not (nil? (:ll %)))
-    #(:ll %)
-    t))
+;(map #(println "-->" % "<--")
+;  (tree-seq
+;    #(not (nil? (:ll %)))
+;    #(:ll %)
+;    t))
+
+(defn qt-with-children?
+  [qt]
+  (let [ll (:ll qt)
+        lg (:lg qt)
+        gl (:gl qt)
+        gg (:gg qt)]
+    (if (and (nil? ll) (nil? lg) (nil? gl) (nil? gg))
+      false
+      true)
+    ))
+
+(defn qt-children
+  [qt]
+  (let [ll (:ll qt)
+        lg (:lg qt)
+        gl (:gl qt)
+        gg (:gg qt)]
+    (filter #(not (nil? %)) [ll lg gl gg])))
+
+; (map #(:s %) (qt-children t))
+;=> ([1 1] [6 15] [20 3])
+
+;(count
+;  (tree-seq
+;    qt-with-children?
+;    qt-children
+;    t))
+; => 11
+
+;(map #(:s %)
+;  (tree-seq
+;    qt-with-children?
+;    qt-children
+;    t))
+;([16 15] [1 1] [2 3] [12 1] [10 1] [4 9] [14 5] [8 5] [6 15] [20 3] [18 9])
+
+
+
+
+
+;(defn qt-children-uphill
+;  [qt [x y]]
+;  (let [lx (first (:s qt))
+;        ly (last (:s qt))
+;        ll (:ll qt)
+;        lg (:lg qt)
+;        gl (:gl qt)
+;        gg (:gg qt)
+;        uphill? (fn [qt]
+;                  (and
+;                    (not (nil? qt))
+;                    (not= [x y] qt)
+;                    (let [lx (first (:s qt))
+;                          ly (last (:s qt))]
+;                      (and (>= lx x) (>= ly y)))))]
+;    (if (and (< x lx) (< y ly)) ; TODO sure <= or just < ?
+;      (concat [lg gl gg] (if (uphill? ll) ll nil))
+;      gg;(filter uphill? [lg gl gg])
+;      )
+;    ))
+
+(defn qt-children-uphill
+  [qt [x y]]
+  (let [lx (first (:s qt))
+        ly (last (:s qt))
+        ll (:ll qt)
+        lg (:lg qt)
+        gl (:gl qt)
+        gg (:gg qt)]
+    (cond
+      (and (< x lx) (< y ly)) (filter #(not (nil? %)) [ll lg gl gg])
+      (and (= x lx) (= y ly)) (filter #(not (nil? %)) [ll lg gl gg])
+      (and (> x lx) (> y ly)) (filter #(not (nil? %)) [gg]))))
+
+; TODO change check as well???!?!
+
+(defn retrieve-stations
+  ([qt]
+    (retrieve-stations qt [-1 -1]))
+  ([qt [x y]]
+    ; TODO letfn
+    (tree-seq
+      qt-with-children?
+      qt-children
+      t)
+    ))
