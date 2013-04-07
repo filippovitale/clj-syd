@@ -179,3 +179,16 @@
 
 ;(for [i (range) :while (< i (inc (* 2 n)))] 10% slower
 ;(for [i (range 0 (inc (* 2 n)))] faster
+
+;http://clojure.github.com/clojure/clojure.core-api.html#clojure.core/reduced
+;https://news.ycombinator.com/item?id=5304949
+
+;Try deftype and/or defrecord
+;http://stackoverflow.com/questions/2944108/implementing-custom-data-structures-using-clojure-protocols
+;http://techbehindtech.com/2010/11/15/clojure-defrecord-deftype/
+
+; improve mod-pow
+;(map first (station-generator-with-duplicates 22))
+;(1 2 4 8 16 10 20 18 14 6 12 2 4 8 16 10 20 18 14 6 12 2 4 8 16 10 20 18 14 6 12 2 4 8 16 10 20 18 14 6 12 2 4 8 16)
+;(map last (station-generator-with-duplicates 22))
+;(1 3 9 5 15 1 3 9 5 15 1 3 9 5 15 1 3 9 5 15 1 3 9 5 15 1 3 9 5 15 1 3 9 5 15 1 3 9 5 15 1 3 9 5 15)
