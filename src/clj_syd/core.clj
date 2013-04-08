@@ -17,69 +17,27 @@
   (for [i (range 0 (inc (* 2 n)))]
     (station n i)))
 
-(defn s2gen
-  "Experiment..."
-  [n]
-  (for [i (range 0 (inc (* 2 n)))]
-    (station n i)
-    ; x = 1; y = 1
-    ; x = (3 * x) % n
-    ; y = (2 * y) % n
-
-    ;(map inc (take 5 (repeat 3)))
-    ;(map inc (take 5 (repeat 2)))
-
-    ))
-
-; Co-Recursion in Clojure
-; http://squirrel.pl/blog/2010/07/26/corecursion-in-clojure/
-(def fib-seq
-  (lazy-cat
-    [0 1]
-    (map + fib-seq (rest fib-seq))))
-
-;http://rosettacode.org/wiki/Fibonacci_sequence#Clojure
-(defn fibs []
-  (map first (iterate (fn [[a b]] [b (+ a b)]) [0 1])))
-
-;try
-(defn fib-seq []
-  ((fn rfib [a b]
-     (lazy-cons a (rfib b (+ a b))))
-    0 1))
-
-; lazy-cons + lazy-seq ==> ITERATE !!!!
-;(def newton (iterate (fn[x] (/ (+ x (/ 2.0 x)) 2)) 2))
-;(take 5 newton)
-(def n-c 22)
-(def i-c 3)
-
-(defn m2
-  [i n]
-  (iterate
-    #(mod (* i %) n)
-    1))
-
-(take 45 (m2 2 22))
-
-(defn m
-  [n]
-  (iterate
-    #(vec (list (first %) (last %)))
-    [1 1]))
-
-(take 45 (m 22))
-;works
-
-(defn m
-  [n]
+(defn station-generator-inf
+  "Infinite Station Generator"
+  [^long n]
   (iterate
     #(vec (list
             (mod (* 2 (first %)) n)
             (mod (* 3 (last %)) n)))
+    ; x = 1; y = 1
+    ; x = (3 * x) % n
+    ; y = (2 * y) % n
     [1 1]))
 
-(take 45 (m 22))
+;user=> (last (station-generator-with-duplicates (+ 3 1e6)))
+;[4 9]
+;user=> (last (take 2000007 (m (+ 3 1e6))))
+;[4.0 9.0]
+
+
+
+
+
 
 ; TODO (defrecord Aaa ^int aaa)
 

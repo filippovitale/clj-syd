@@ -80,7 +80,7 @@
         gg (:gg qt)]
     (filter #(not (nil? %)) [ll lg gl gg])))
 
-; TODO rename somethign like possible branches with...
+; TODO rename something like possible branches with...
 (defn qt-children-uphill
   [qt [x y]]
   (let [lx (first (:s qt))

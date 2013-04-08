@@ -192,3 +192,35 @@
 ;(1 2 4 8 16 10 20 18 14 6 12 2 4 8 16 10 20 18 14 6 12 2 4 8 16 10 20 18 14 6 12 2 4 8 16 10 20 18 14 6 12 2 4 8 16)
 ;(map last (station-generator-with-duplicates 22))
 ;(1 3 9 5 15 1 3 9 5 15 1 3 9 5 15 1 3 9 5 15 1 3 9 5 15 1 3 9 5 15 1 3 9 5 15 1 3 9 5 15 1 3 9 5 15)
+
+; Co-Recursion in Clojure
+; http://squirrel.pl/blog/2010/07/26/corecursion-in-clojure/
+(def fib-seq
+  (lazy-cat
+    [0 1]
+    (map + fib-seq (rest fib-seq))))
+
+;http://rosettacode.org/wiki/Fibonacci_sequence#Clojure
+(defn fibs []
+  (map first (iterate (fn [[a b]] [b (+ a b)]) [0 1])))
+
+;try
+(defn fib-seq []
+  ((fn rfib [a b]
+     (lazy-cons a (rfib b (+ a b))))
+    0 1))
+
+; lazy-cons + lazy-seq ==> ITERATE !!!!
+;(def newton (iterate (fn[x] (/ (+ x (/ 2.0 x)) 2)) 2))
+;(take 5 newton)
+(def n-c 22)
+(def i-c 3)
+
+(defn m2
+  [i n]
+  (iterate
+    #(mod (* i %) n)
+    1))
+
+(take 45 (m2 2 22))
+
