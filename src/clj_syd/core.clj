@@ -65,16 +65,18 @@
 (defn m
   [n]
   (iterate
-    #([% %])
+    #(vec (list (first %) (last %)))
     [1 1]))
 
 (take 45 (m 22))
+;works
 
 (defn m
   [n]
   (iterate
-    #([mod (* 2 (first %)) n
-       mod (* 3 (last %)) n])
+    #(vec (list
+            (mod (* 2 (first %)) n)
+            (mod (* 3 (last %)) n)))
     [1 1]))
 
 (take 45 (m 22))
