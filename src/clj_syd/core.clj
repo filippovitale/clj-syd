@@ -1,9 +1,11 @@
 (ns clj-syd.core
   (:require [clojure.tools.cli :as cli]
-            ;[clj-syd.stations-modpow :as s1]
+            [clj-syd.stations-modpow :as s1]
             ;[clj-syd.stations-modmul :as s2]
-            ;[clj-syd.uphill :as u]
+            [clj-syd.uphill :as u]
             ))
+
+(set! *warn-on-reflection* true)
 
 (defn solve
   [k]
@@ -16,11 +18,12 @@
 (defn -main
   "Pr*j*ct E*l*r - Pr*bl*m 411"
   [& args]
-  (let [[options args banner] (cli/cli args
-                                ["-k" "--k" "The value of k" :parse-fn #(Integer. %) :default 5])
-        k (:k options)
-        solution (solve k)]
-    (println "Longest uphill path for k =" k ": " solution)))
+  (time
+    (let [[options args banner] (cli/cli args
+                                  ["-k" "--k" "The value of k" :parse-fn #(Integer. ^String %) :default 5])
+          k (:k options)
+          solution (solve k)]
+      (println "Longest uphill path for k =" k ": " solution))))
 
 ;#'user/station-generator-inf
 ;user=>user=> (take 10 (station-generator-inf (+ 3 1e6)))

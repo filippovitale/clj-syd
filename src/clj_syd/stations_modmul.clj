@@ -34,3 +34,13 @@
 ;(station-generator 22)
 ;=>  #{[16 15] [1 1] [2 3] [4 9] [6 15] [20 3] [12 1] [10 1] [14 5] [18 9] [8 5]}
 
+
+
+;(def foo 10)
+;(time (dotimes [i 1000000] (Math/abs foo)))
+;=> "Elapsed time: 3032.741902 msecs"
+;(time (dotimes [i 1000000] (Math/abs (long foo))))
+;=> "Elapsed time: 16.226857 msec
+;(time (dotimes [i 1000000]
+;        (let [baz 10] (Math/abs baz))))
+;=> "Elapsed time: 5.586289 msecs"
