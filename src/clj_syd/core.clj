@@ -31,13 +31,8 @@
 
 ;user=> (last (station-generator-with-duplicates (+ 3 1e6)))
 ;[4 9]
-;user=> (last (take 2000007 (m (+ 3 1e6))))
-;[4.0 9.0]
-
-
-
-
-
+;user=> (last (take 2000007 (station-generator-inf (+ 3 1e6))))
+;[4.0 9.0] <- [4 9] using ^long
 
 ; TODO (defrecord Aaa ^int aaa)
 
