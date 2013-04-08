@@ -1,8 +1,10 @@
-(ns clj-syd.quadtree-naive)
+(ns clj-syd.quadtree-set)
 
 (def empty-stations #{})
 
-(defn insert-station [qt [x y]] (conj qt [x y]))
+(defn insert-station
+  [qt [x y]]
+  (conj qt [x y]))
 
 (defn retrieve-stations
   ([qt]

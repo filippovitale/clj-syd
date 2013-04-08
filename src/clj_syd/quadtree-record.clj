@@ -1,4 +1,4 @@
-(ns clj-syd.quadtree)
+(ns clj-syd.quadtree-record)
 
 (defrecord QuadTree [s ll lg gl gg])
 

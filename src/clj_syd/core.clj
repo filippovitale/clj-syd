@@ -1,65 +1,32 @@
 (ns clj-syd.core
-  (:require [clj-syd.uphill :as u]
-            [clj-syd.quadtree :as q]))
-
-(defn mod-pow
-  [base n i]
-  (.intValue
-    (.modPow (biginteger base) (biginteger i) (biginteger n))))
-
-(defn station
-  [n i]
-  [(mod-pow 2 n i) (mod-pow 3 n i)])
-
-(defn station-generator-with-duplicates
-  "Generate the stations for n WITH DUPLICATES"
-  [n]
-  (for [i (range 0 (inc (* 2 n)))]
-    (station n i)))
-
-(defn station-generator-inf
-  "Infinite Station Generator"
-  [^long n]
-  (iterate
-    #(vec (list
-            (mod (* 2 (first %)) n)
-            (mod (* 3 (last %)) n)))
-    ; x = 1; y = 1
-    ; x = (3 * x) % n
-    ; y = (2 * y) % n
-    [1 1]))
-
-;user=> (last (station-generator-with-duplicates (+ 3 1e6)))
-;[4 9]
-;user=> (last (take 2000007 (station-generator-inf (+ 3 1e6))))
-;[4.0 9.0] <- [4 9] using ^long
-
-; TODO (defrecord Aaa ^int aaa)
-
-; benchmark
-; (/ (- (. System (nanoTime)) nano-start) 1e6)
-
-(defn station-generator
-  "Generate the DISTINCT stations for n"
-  [n]
-  (reduce
-    #(if (q/contain-station? %1 %2)
-       (reduced %1)
-       (q/insert-station %1 %2))
-    q/empty-stations
-    (station-generator-with-duplicates n)))
-;(station-generator 22)
-;=>  #{[16 15] [1 1] [2 3] [4 9] [6 15] [20 3] [12 1] [10 1] [14 5] [18 9] [8 5]}
-
-(defn k->n [k] (* k k k k k))
+  (:require [clojure.tools.cli :as cli]
+            ;[clj-syd.stations-modpow :as s1]
+            ;[clj-syd.stations-modmul :as s2]
+            ;[clj-syd.uphill :as u]
+            ))
 
 (defn solve
-  [n]
+  [k]
   (let
-    [stations (station-generator (k->n n))]
-    (u/uphill-count stations 0 [-1 -1])))
+    [k->n (fn [k] (* k k k k k))
+     n (k->n k)
+     stations (s1/station-generator n)]
+    (u/uphill-count stations)))
 
 (defn -main
   "Pr*j*ct E*l*r - Pr*bl*m 411"
   [& args]
-  (println "Longest uphill path for k=3: " (solve 5)))
+  (let [[options args banner] (cli/cli args
+                                ["-k" "--k" "The value of k" :parse-fn #(Integer. %) :default 5])
+        k (:k options)
+        solution (solve k)]
+    (println "Longest uphill path for k =" k ": " solution)))
+
+;#'user/station-generator-inf
+;user=>user=> (take 10 (station-generator-inf (+ 3 1e6)))
+;([1 1] [2 3] [4 9] [8 27] [16 81] [32 243] [64 729] [128 2187] [256 6561] [512 19683])
+;user=> (time (last (take 48600001 (station-generator-inf (* 30 30 30 30 30)))))
+;"Elapsed time: 23087.22632 msecs"
+;[12909376 4400001]
+;user=> (last (take 2000007 (station-generator-inf (+ 3 1e6))))
+;[4 9]
