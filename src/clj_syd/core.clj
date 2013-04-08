@@ -79,6 +79,10 @@
 
 (take 45 (m 22))
 
+; TODO (defrecord Aaa ^int aaa)
+
+; benchmark
+; (/ (- (. System (nanoTime)) nano-start) 1e6)
 
 (defn station-generator
   "Generate the DISTINCT stations for n"
