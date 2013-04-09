@@ -6,20 +6,47 @@
   "Infinite Station Generator"
   [n]
   (iterate
-    #(vec (list
-            (mod (* 2 (first %)) n)
-            (mod (* 3 (last %)) n)))
-    ; x = 1; y = 1
-    ; x = (3 * x) % n
-    ; y = (2 * y) % n
+    #(let
+       [[x y] %]
+       [(mod (* 2 x) n)
+        (mod (* (int 3) y) n)])
     [1 1]))
 
-;user=> (last (station-generator-with-duplicates (+ 3 1e6)))
-;[4 9]
-;user=> (last (take 2000007 (station-generator-inf (+ 3 1e6))))
-;[4.0 9.0] <- [4 9] using ^long
 
-; TODO (defrecord Aaa ^int aaa)
+(defrecord Station [^int x ^int y])
+
+(defn station-generator
+  "Infinite Station Generator"
+  [n]
+  (iterate
+    #(let
+       [x (.-x %)
+        y (.-y %)]
+       (Station.
+         (mod (* 2 x) n)
+         (mod (* (int 3) y) n)))
+    (Station. 1 1)))
+
+(deftype Station [^int x ^int y])
+(defn station-generator
+  "Infinite Station Generator"
+  [n]
+  (iterate
+    #(let
+       [x (.x %)
+        y (.y %)]
+       (Station.
+         (mod (* 2 x) n)
+         (mod (* (int 3) y) n)))
+    (Station. 1 1)))
+
+; 1-2% faster with:
+;   [(mod (bit-shift-left x 1) n)
+;   [[^int x ^int y] %]
+;   unchecked-multiply-int
+
+; Slower if changing with:
+;   [n (int n)
 
 ; benchmark
 ; (/ (- (. System (nanoTime)) nano-start) 1e6)

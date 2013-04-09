@@ -17,3 +17,6 @@
 
 ;user=> (type (first (last (take 11 (station-generator 22)))))
 ;java.lang.Integer
+
+;user=> (time (last (station-generator (+ 3 1e6))))
+;[4 9]
