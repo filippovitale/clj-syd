@@ -1,7 +1,7 @@
 (ns clj-syd.core
   (:require [clojure.tools.cli :as cli]
             [clj-syd.stations-modpow :as s1]
-            ;[clj-syd.stations-modmul :as s2]
+            [clj-syd.stations-modmul :as s2]
             [clj-syd.uphill :as u]
             ))
 
@@ -20,7 +20,7 @@
   [& args]
   (time
     (let [[options args banner] (cli/cli args
-                                  ["-k" "--k" "The value of k" :parse-fn #(Integer. ^String %) :default 5])
+                                  ["-k" "--k" "The value of k" :parse-fn #(Integer. ^String %) :default 3])
           k (:k options)
           solution (solve k)]
       (println "Longest uphill path for k =" k ": " solution))))

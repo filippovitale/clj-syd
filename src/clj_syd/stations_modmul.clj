@@ -1,8 +1,10 @@
 (ns clj-syd.stations-modmul)
 
+(set! *warn-on-reflection* true)
+
 (defn station-generator
   "Infinite Station Generator"
-  [^long n]
+  [n]
   (iterate
     #(vec (list
             (mod (* 2 (first %)) n)
@@ -22,15 +24,15 @@
 ; benchmark
 ; (/ (- (. System (nanoTime)) nano-start) 1e6)
 
-(defn station-generator
-  "Generate the DISTINCT stations for n"
-  [n]
-  (reduce
-    #(if (q/contain-station? %1 %2)
-       (reduced %1)
-       (q/insert-station %1 %2))
-    q/empty-stations
-    (station-generator-with-duplicates n)))
+;(defn station-generator
+;  "Generate the DISTINCT stations for n"
+;  [n]
+;  (reduce
+;    #(if (q/contain-station? %1 %2)
+;       (reduced %1)
+;       (q/insert-station %1 %2))
+;    q/empty-stations
+;    (station-generator-with-duplicates n)))
 ;(station-generator 22)
 ;=>  #{[16 15] [1 1] [2 3] [4 9] [6 15] [20 3] [12 1] [10 1] [14 5] [18 9] [8 5]}
 
@@ -44,3 +46,9 @@
 ;(time (dotimes [i 1000000]
 ;        (let [baz 10] (Math/abs baz))))
 ;=> "Elapsed time: 5.586289 msecs"
+
+
+;(defn fib ^long [^long n]
+;    (if (<= n 1)
+;        1
+;        (+ (fib (dec n)) (fib (- n 2)))))
