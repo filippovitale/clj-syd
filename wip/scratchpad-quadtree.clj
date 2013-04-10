@@ -326,3 +326,15 @@
 ;; y >= *g else *l
 ;; nil? new_QT_there else that_s_the_root
 ;; recur
+
+(deftype TreeNode [val l r]
+  clojure.lang.IPersistentStack
+  (cons [_ v]
+    (if (< v val)
+      (TreeNode. val (cons l v) r)
+      (TreeNode. val l (cons r v))))
+  (peek [_] (if l (peek l) val))
+  (pop [_] (if l (TreeNode. val (pop l) r) r))
+  clojure.lang.Seqable
+  (seq [t]
+    (concat (seq l) [val] (seq r))))

@@ -4,9 +4,6 @@
 ; TODO try (defrecord QuadTree [^int x ^int y ^QuadTree ll lg gl gg])
 ; (.-x QuadTree) (.-y QuadTree)
 
-; TODO try (deftype QuadTree [^int x ^int y ^QuadTree ll lg gl gg]) <-- half time faster!
-; (.x QuadTree) (.y QuadTree)
-
 ; TODO
 ;(defrecord Foo [x]) ;=> user.Foo
 ;(.-x (Foo. 10)) ;=> 10

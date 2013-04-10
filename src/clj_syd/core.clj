@@ -25,6 +25,9 @@
           solution (solve k)]
       (println "Longest uphill path for k =" k ": " solution))))
 
+; benchmark
+; (/ (- (. System (nanoTime)) nano-start) 1e6)
+
 ;#'user/station-generator-inf
 ;user=>user=> (take 10 (station-generator-inf (+ 3 1e6)))
 ;([1 1] [2 3] [4 9] [8 27] [16 81] [32 243] [64 729] [128 2187] [256 6561] [512 19683])
@@ -33,3 +36,12 @@
 ;[12909376 4400001]
 ;user=> (last (take 2000007 (station-generator-inf (+ 3 1e6))))
 ;[4 9]
+
+
+
+; TODO try
+;(defn -main [& args]
+;...
+;  )
+
+;(-main 15)
