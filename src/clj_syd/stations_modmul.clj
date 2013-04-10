@@ -10,12 +10,23 @@
         (mod (* 3 y) n)])
     [1 1]))
 
-; 1-2% faster with:
+; almost the same time with:
 ;   [(mod (bit-shift-left x 1) n)
 ;   [[^int x ^int y] %]
 ;   unchecked-multiply-int
 ; Slower if changing with:
 ;   [n (int n)
+
+; Optimized with no time improvement
+;(defn station-generator
+;  "Infinite Station Generator"
+;  [n]
+;  (iterate
+;    #(let
+;       [[^int x ^int y] %]
+;       [(mod (bit-shift-left x 1) (int n))
+;        (mod (unchecked-multiply-int 3 y) (int n))])
+;    [1 1]))
 
 ;(defn station-generator
 ;  "Generate the DISTINCT stations for n"
