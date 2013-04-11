@@ -10,19 +10,17 @@
   Object
   (toString [this]
     (let [template "[%d %d] %s%s%s%s"
-         ]; b->a #(if (nil? branch) "." "X")]
-      (format template x y
-        (if (nil? ll) "." "X")
-        (if (nil? lg) "." "X")
-        (if (nil? gl) "." "X")
-        (if (nil? gg) "." "X")
-        ))))
+          b->a #(if (nil? %) "." "|")]
+      (format template x y (b->a ll) (b->a lg) (b->a gl) (b->a gg)))))
+
 ; (.x (.ll (QuadTree. 3 3 nil nil nil nil)))
 ; => 1
 ; (.x (.lg (QuadTree. 3 3 nil (QuadTree. 2 2 nil nil nil nil) nil nil)))
 ;  => 2
 ; (nil? (.gg (QuadTree. 3 3 nil (QuadTree. 2 2 nil nil nil nil) nil nil)))
 ; true
+;user=> (QuadTree. 1 2 nil (QuadTree. 1 2 nil nil nil nil) nil nil)
+;#<QuadTree [1 2] .|..>
 
 ;(defn ^:static insert-station ; TODO try
 (defn insert-station
