@@ -1,32 +1,25 @@
 (ns clj-syd.quadtree-type)
 
 (definterface IQuadTree
-  ;(xy [])
-  (branch []) ; aka qt-with-children
+  (children [])
+  (uphillchildren [[x y]])
   )
 
 (deftype QuadTree [^int x ^int y ll lg gl gg]
   IQuadTree
-  ;(xy [this] [x y]) ; that was an example, gonna delete this soon
-  (branch [this]
-    ;(not (and (nil? ll) (nil? lg) (nil? gl) (nil? gg))))
-    (not (and (map nil? [ll lg  gl  gg]))))
-;(reduce #(and) (map nil? [ 1 2 nil 4]) true)
-
+  (children [this]
+    (filter #(not (nil? %)) [ll lg gl gg]))
+  (uphillchildren [this [^int rx ^int ry]]
+    (cond
+      (and (<, rx x) (<, ry y)) (filter #(not (nil? %)) [ll lg gl gg])
+      (and (<, rx x) (>= ry y)) (filter #(not (nil? %)) [,, lg ,, gg])
+      (and (>= rx x) (<, ry y)) (filter #(not (nil? %)) [,, ,, gl gg])
+      :else (filter #(not (nil? %)) [gg])))
   Object
   (toString [this]
     (let [template "[%d %d] %s%s%s%s"
           b->a #(if (nil? %) "." "|")]
       (format template x y (b->a ll) (b->a lg) (b->a gl) (b->a gg)))))
-
-; (.x (.ll (QuadTree. 3 3 nil nil nil nil)))
-; => 1
-; (.x (.lg (QuadTree. 3 3 nil (QuadTree. 2 2 nil nil nil nil) nil nil)))
-;  => 2
-; (nil? (.gg (QuadTree. 3 3 nil (QuadTree. 2 2 nil nil nil nil) nil nil)))
-; true
-;user=> (QuadTree. 1 2 nil (QuadTree. 1 2 nil nil nil nil) nil nil)
-;#<QuadTree [1 2] .|..>
 
 (def empty-stations nil)
 
@@ -65,33 +58,11 @@
           gg (.gg qt)]
       (cond
         (and (,= x lx) (,= y ly)) true
-        (and (<, x lx) (<, y ly)) (contain-station? ll [x y])
-        (and (<, x lx) (>= y ly)) (contain-station? lg [x y])
-        (and (>= x lx) (<, y ly)) (contain-station? gl [x y])
-        (and (>= x lx) (>= y ly)) (contain-station? gg [x y])))
+        (and (<, x lx) (<, y ly)) (recur ll [x y])
+        (and (<, x lx) (>= y ly)) (recur lg [x y])
+        (and (>= x lx) (<, y ly)) (recur gl [x y])
+        (and (>= x lx) (>= y ly)) (recur gg [x y])))
     ))
-
-(defn qt-children
-  [qt]
-  (let [ll (.ll qt)
-        lg (.lg qt)
-        gl (.gl qt)
-        gg (.gg qt)]
-    (filter #(not (nil? %)) [ll lg gl gg])))
-
-(defn qt-children-uphill
-  [qt [x y]]
-  (let [lx (int (.x qt))
-        ly (int (.y qt))
-        ll (.ll qt)
-        lg (.lg qt)
-        gl (.gl qt)
-        gg (.gg qt)]
-    (cond
-      (and (<, x lx) (<, y ly)) (filter #(not (nil? %)) [ll lg gl gg])
-      (and (<, x lx) (>= y ly)) (filter #(not (nil? %)) [,, lg ,, gg])
-      (and (>= x lx) (<, y ly)) (filter #(not (nil? %)) [,, ,, gl gg])
-      :else (filter #(not (nil? %)) [gg]))))
 
 (defn retrieve-stations
   ([qt] (retrieve-stations qt [-1 -1]))
@@ -105,6 +76,47 @@
            (and (>= lx x) (>= lx y) (not= [lx ly] [x y])))
         (map #(:s %) (tree-seq qt-with-children? uphill qt))))))
 
+; TODO why don't semplify EVERYTHING into ISeq?
+; that way I can:
+; 1) search for a node in O(log n)
+; 2) get all the children from there as ISeq
+; see http://www.quantisan.com/unlock-lisp-sorcery-in-your-data-structure-by-implementing-clojure-iseq/
+; see http://pepijndevos.nl/how-reify-works-and-how-to-write-a-custom-typ/index.html
+; see http://bpeirce.me/clojure-sequence-implementations.html
+; "You should have a look at clojure.lang.StringSeq and
+; clojure.lang.IteratorSeq. Deriving from ASeq as they do is the way to
+; go. The interface is stable, and no, there are no other optimizations
+; needed." --Rich Hickey
+
+;user=> (.children (QuadTree. 1 2 nil nil nil nil))
+;()
+;user=> (.children (QuadTree. 1 2
+;                    (QuadTree. 0 0 nil nil nil nil)
+;                    nil
+;                    nil
+;                    (QuadTree. 3 3 nil nil nil nil)))
+;(#<QuadTree [0 0] ....> #<QuadTree [3 3] ....>)
+;(.uphillchildren (QuadTree. 1 2
+;                   (QuadTree. 0 0 nil nil nil nil)
+;                   nil
+;                   nil
+;                   (QuadTree. 3 3 nil nil nil nil)) [1 1])
+;(#<QuadTree [3 3] ....>)
+;user=> (empty? (.children (QuadTree. 1 2
+;                            (QuadTree. 0 0 nil nil nil nil)
+;                            nil
+;                            nil
+;                            (QuadTree. 3 3 nil nil nil nil))))
+;false
+;user=> (empty? (.children (QuadTree. 1 2 nil nil nil nil)))
+;true
+
+; minimum example
+;(definterface IQuadTree
+;  (xy []))
+;(deftype QuadTree [^int x ^int y ll lg gl gg]
+;  IQuadTree
+;  (xy [this] [x y]))
 
 ;10.6 definterface
 ; As we mentioned in section 9.3, Clojure was built on abstractions in the host platform Java.
