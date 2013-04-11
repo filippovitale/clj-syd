@@ -65,7 +65,13 @@
         (and (>= x lx) (>= y ly)) (contain-station? gg [x y])))
     ))
 
-
+(defn qt-with-children?
+  [qt]
+  (let [ll (.ll qt)
+        lg (.lg qt)
+        gl (.gl qt)
+        gg (.gg qt)]
+    (not (and (nil? ll) (nil? lg) (nil? gl) (nil? gg)))))
 
 
 ;10.6 definterface
