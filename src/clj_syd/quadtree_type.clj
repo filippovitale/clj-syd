@@ -2,11 +2,17 @@
 
 (definterface IQuadTree
   ;(xy [])
+  (branch []) ; aka qt-with-children
   )
 
 (deftype QuadTree [^int x ^int y ll lg gl gg]
-  ;IQuadTree
+  IQuadTree
   ;(xy [this] [x y]) ; that was an example, gonna delete this soon
+  (branch [this]
+    ;(not (and (nil? ll) (nil? lg) (nil? gl) (nil? gg))))
+    (not (and (map nil? [ll lg  gl  gg]))))
+;(reduce #(and) (map nil? [ 1 2 nil 4]) true)
+
   Object
   (toString [this]
     (let [template "[%d %d] %s%s%s%s"
@@ -65,13 +71,39 @@
         (and (>= x lx) (>= y ly)) (contain-station? gg [x y])))
     ))
 
-(defn qt-with-children?
+(defn qt-children
   [qt]
   (let [ll (.ll qt)
         lg (.lg qt)
         gl (.gl qt)
         gg (.gg qt)]
-    (not (and (nil? ll) (nil? lg) (nil? gl) (nil? gg)))))
+    (filter #(not (nil? %)) [ll lg gl gg])))
+
+(defn qt-children-uphill
+  [qt [x y]]
+  (let [lx (int (.x qt))
+        ly (int (.y qt))
+        ll (.ll qt)
+        lg (.lg qt)
+        gl (.gl qt)
+        gg (.gg qt)]
+    (cond
+      (and (<, x lx) (<, y ly)) (filter #(not (nil? %)) [ll lg gl gg])
+      (and (<, x lx) (>= y ly)) (filter #(not (nil? %)) [,, lg ,, gg])
+      (and (>= x lx) (<, y ly)) (filter #(not (nil? %)) [,, ,, gl gg])
+      :else (filter #(not (nil? %)) [gg]))))
+
+(defn retrieve-stations
+  ([qt] (retrieve-stations qt [-1 -1]))
+  ([qt [x y]]
+    (letfn
+      [(uphill [qt] (qt-children-uphill qt [x y]))]
+      (filter
+        #(let
+           [lx (first %)
+            ly (last %)]
+           (and (>= lx x) (>= lx y) (not= [lx ly] [x y])))
+        (map #(:s %) (tree-seq qt-with-children? uphill qt))))))
 
 
 ;10.6 definterface
