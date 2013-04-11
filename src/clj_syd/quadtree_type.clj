@@ -22,6 +22,8 @@
 ;user=> (QuadTree. 1 2 nil (QuadTree. 1 2 nil nil nil nil) nil nil)
 ;#<QuadTree [1 2] .|..>
 
+(def empty-stations nil)
+
 ;(defn ^:static insert-station ; TODO try
 (defn insert-station
   [qt [^int x ^int y]]
@@ -44,6 +46,27 @@
         (and (>= x lx) (<, y ly)) (QuadTree. lx ly ll lg (branch gl) gg)
         (and (>= x lx) (>= y ly)) (QuadTree. lx ly ll lg gl (branch gg))
         ))))
+
+(defn contain-station?
+  [qt [x y]]
+  (if (nil? qt)
+    false
+    (let [lx (int (.x qt))
+          ly (int (.y qt))
+          ll (.ll qt)
+          lg (.lg qt)
+          gl (.gl qt)
+          gg (.gg qt)]
+      (cond
+        (and (,= x lx) (,= y ly)) true
+        (and (<, x lx) (<, y ly)) (contain-station? ll [x y])
+        (and (<, x lx) (>= y ly)) (contain-station? lg [x y])
+        (and (>= x lx) (<, y ly)) (contain-station? gl [x y])
+        (and (>= x lx) (>= y ly)) (contain-station? gg [x y])))
+    ))
+
+
+
 
 ;10.6 definterface
 ; As we mentioned in section 9.3, Clojure was built on abstractions in the host platform Java.
