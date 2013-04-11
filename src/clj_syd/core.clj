@@ -28,6 +28,15 @@
 ; benchmark
 ; (/ (- (. System (nanoTime)) nano-start) 1e6)
 
+; TODO clojure.pprint/print-table
+;user=> (clojure.pprint/print-table [:name :initial-impression]
+;         [{:name "Rich" :initial-impression "rock star"}
+;          {:name "Andy" :initial-impression "engineer"}])
+;| :name | :initial-impression |
+;|-------+---------------------|
+;|  Rich |           rock star |
+;|  Andy |            engineer |
+
 ;#'user/station-generator-inf
 ;user=>user=> (take 10 (station-generator-inf (+ 3 1e6)))
 ;([1 1] [2 3] [4 9] [8 27] [16 81] [32 243] [64 729] [128 2187] [256 6561] [512 19683])
