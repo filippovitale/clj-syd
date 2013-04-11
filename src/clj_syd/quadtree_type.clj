@@ -1,15 +1,65 @@
 (ns clj-syd.quadtree-type)
 
 (definterface IQuadTree
-  (^String ll [])
-;  (^IQuadTree ll [])
+  ;(xy [])
   )
 
 (deftype QuadTree [^int x ^int y ll lg gl gg]
   IQuadTree
-  (ll [this] "ll")
-  )
-; (.x QuadTree) (.y QuadTree)
+  ;(xy [this] [x y]) ; that was an example, gonna delete this soon
+
+  Object
+  (toString [this]
+    (let [template "[%d %d]\n"]
+      (format template x y))))
+; (.x (.ll (QuadTree. 3 3 nil nil nil nil)))
+; => 1
+; (.x (.lg (QuadTree. 3 3 nil (QuadTree. 2 2 nil nil nil nil) nil nil)))
+;  => 2
+; (nil? (.gg (QuadTree. 3 3 nil (QuadTree. 2 2 nil nil nil nil) nil nil)))
+; true
+
+;(defn insert-station
+;  [qt [x y]]
+;  (if (nil? qt)
+;    (QuadTree. [x y] nil nil nil nil)
+;    (let [lx (first (:s qt))
+;          ly (last (:s qt))
+;          ll (:ll qt)
+;          lg (:lg qt)
+;          gl (:gl qt)
+;          gg (:gg qt)]
+;      (cond
+;        (and (<, x lx) (<, y ly))
+;        (QuadTree. [lx ly]
+;          (if (nil? ll)
+;            (QuadTree. [x y] nil nil nil nil)
+;            (insert-station ll [x y]))
+;          lg gl gg)
+;
+;        (and (<, x lx) (>= y ly))
+;        (QuadTree. [lx ly]
+;          ll (if (nil? lg)
+;               (QuadTree. [x y] nil nil nil nil)
+;               (insert-station lg [x y]))
+;          gl gg)
+;
+;        (and (>= x lx) (<, y ly))
+;        (QuadTree. [lx ly]
+;          ll lg (if (nil? gl)
+;                  (QuadTree. [x y] nil nil nil nil)
+;                  (insert-station gl [x y]))
+;          gg)
+;
+;        (and (>= x lx) (>= y ly))
+;        (QuadTree. [lx ly]
+;          ll lg gl (if (nil? gg)
+;                     (QuadTree. [x y] nil nil nil nil)
+;                     (insert-station gg [x y])))
+;        ))))
+
+
+
 
 
 ;10.6 definterface

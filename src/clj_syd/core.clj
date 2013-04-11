@@ -1,41 +1,43 @@
 (ns clj-syd.core
-  (:require [clojure.tools.cli :as cli]
-            [clj-syd.stations-modpow :as s1]
-            [clj-syd.stations-modmul :as s2]
-            [clj-syd.uphill :as u]
+  (:require [clj-syd.quadtree-type :as q3]
+            [clojure.tools.cli :as cli]
+            [clojure.pprint :as pp]
+            ; [clj-syd.stations-modpow :as s1]
+            ; [clj-syd.stations-modmul :as s2]
+
+            ; [clj-syd.uphill :as u]
             ))
 
 (set! *warn-on-reflection* true)
 
+;(defn solve
+;  [k]
+;  (let
+;    [k->n (fn [k] (* k k k k k))
+;     n (k->n k)
+;     stations (s2/station-generator n)]
+;    (u/uphill-count stations)))
+
 (defn solve
   [k]
-  (let
-    [k->n (fn [k] (* k k k k k))
-     n (k->n k)
-     stations (s2/station-generator n)]
-    (u/uphill-count stations)))
+  (q3/QuadTree. 2 2 nil nil nil nil)
+  )
 
-(defn -main
-  "Pr*j*ct E*l*r - Pr*bl*m 411"
-  [& args]
-  (time
-    (let [[options args banner]
-          (cli/cli args
-            ["-k" "--k" "The value of k" :parse-fn #(Integer. ^String %) :default 3])
-          k (:k options)]
-      (println "Longest uphill path for k =" k ": " (solve k)))))
+(defn -main [& args]
+  (let [[options args banner]
+        (cli/cli args
+          ["-k" "--k" "The value of k" :parse-fn #(Integer. ^String %) :default 3])
+        k (:k options)]
+    (time
+      (pp/print-table [:k :path ]
+        ; k
+        ; longest-uphill-path
+        [{:k 22 :path 5}
+         {:k k :path (solve k)}])
+      )))
 
 ; benchmark
-; (/ (- (. System (nanoTime)) nano-start) 1e6)
-
-; TODO clojure.pprint/print-table
-;user=> (clojure.pprint/print-table [:name :initial-impression]
-;         [{:name "Rich" :initial-impression "rock star"}
-;          {:name "Andy" :initial-impression "engineer"}])
-;| :name | :initial-impression |
-;|-------+---------------------|
-;|  Rich |           rock star |
-;|  Andy |            engineer |
+; (/ (double (- (. System (nanoTime)) nano-start) 1e6))
 
 ;#'user/station-generator-inf
 ;user=>user=> (take 10 (station-generator-inf (+ 3 1e6)))
