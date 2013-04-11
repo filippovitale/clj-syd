@@ -105,3 +105,5 @@
 ; (definterface INonStorable)
 ; (defn non-storable? [x]
 ;     (instance? INonStorable x))
+
+; maybe investigate on this trick http://stackoverflow.com/questions/1976423/nested-types-in-clojure
