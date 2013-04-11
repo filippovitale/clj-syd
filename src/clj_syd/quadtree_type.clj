@@ -19,48 +19,28 @@
 ; (nil? (.gg (QuadTree. 3 3 nil (QuadTree. 2 2 nil nil nil nil) nil nil)))
 ; true
 
-;(defn insert-station
-;  [qt [x y]]
-;  (if (nil? qt)
-;    (QuadTree. [x y] nil nil nil nil)
-;    (let [lx (first (:s qt))
-;          ly (last (:s qt))
-;          ll (:ll qt)
-;          lg (:lg qt)
-;          gl (:gl qt)
-;          gg (:gg qt)]
-;      (cond
-;        (and (<, x lx) (<, y ly))
-;        (QuadTree. [lx ly]
-;          (if (nil? ll)
-;            (QuadTree. [x y] nil nil nil nil)
-;            (insert-station ll [x y]))
-;          lg gl gg)
-;
-;        (and (<, x lx) (>= y ly))
-;        (QuadTree. [lx ly]
-;          ll (if (nil? lg)
-;               (QuadTree. [x y] nil nil nil nil)
-;               (insert-station lg [x y]))
-;          gl gg)
-;
-;        (and (>= x lx) (<, y ly))
-;        (QuadTree. [lx ly]
-;          ll lg (if (nil? gl)
-;                  (QuadTree. [x y] nil nil nil nil)
-;                  (insert-station gl [x y]))
-;          gg)
-;
-;        (and (>= x lx) (>= y ly))
-;        (QuadTree. [lx ly]
-;          ll lg gl (if (nil? gg)
-;                     (QuadTree. [x y] nil nil nil nil)
-;                     (insert-station gg [x y])))
-;        ))))
-
-
-
-
+;(defn ^:static insert-station ; TODO try
+(defn insert-station
+  [qt [^int x ^int y]]
+  (if (nil? qt)
+    (QuadTree. x y nil nil nil nil)
+    (let [lx (int (.x qt))
+          ly (int (.y qt))
+          ll (.ll qt)
+          lg (.lg qt)
+          gl (.gl qt)
+          gg (.gg qt)
+          branch (fn [child]
+                   (if (nil? child)
+                     (QuadTree. x y nil nil nil nil)
+                     (insert-station child [x y])))
+          ]
+      (cond
+        (and (<, x lx) (<, y ly)) (QuadTree. lx ly (branch ll) lg gl gg)
+        (and (<, x lx) (>= y ly)) (QuadTree. lx ly ll (branch lg) gl gg)
+        (and (>= x lx) (<, y ly)) (QuadTree. lx ly ll lg (branch gl) gg)
+        (and (>= x lx) (>= y ly)) (QuadTree. lx ly ll lg gl (branch gg))
+        ))))
 
 ;10.6 definterface
 ; As we mentioned in section 9.3, Clojure was built on abstractions in the host platform Java.
