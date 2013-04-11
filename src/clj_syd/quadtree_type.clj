@@ -5,13 +5,18 @@
   )
 
 (deftype QuadTree [^int x ^int y ll lg gl gg]
-  IQuadTree
+  ;IQuadTree
   ;(xy [this] [x y]) ; that was an example, gonna delete this soon
-
   Object
   (toString [this]
-    (let [template "[%d %d]\n"]
-      (format template x y))))
+    (let [template "[%d %d] %s%s%s%s"
+         ]; b->a #(if (nil? branch) "." "X")]
+      (format template x y
+        (if (nil? ll) "." "X")
+        (if (nil? lg) "." "X")
+        (if (nil? gl) "." "X")
+        (if (nil? gg) "." "X")
+        ))))
 ; (.x (.ll (QuadTree. 3 3 nil nil nil nil)))
 ; => 1
 ; (.x (.lg (QuadTree. 3 3 nil (QuadTree. 2 2 nil nil nil nil) nil nil)))
