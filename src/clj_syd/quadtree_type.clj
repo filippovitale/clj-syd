@@ -1,12 +1,14 @@
 (ns clj-syd.quadtree-type)
 
 (definterface IQuadTree
+  (xy [])
   (children [])
   (uphillchildren [[x y]])
   )
 
 (deftype QuadTree [^int x ^int y ll lg gl gg]
   IQuadTree
+  (xy [this] [x y])
   (children [this]
     (filter #(not (nil? %)) [ll lg gl gg]))
   (uphillchildren [this [^int rx ^int ry]]
@@ -63,18 +65,6 @@
         (and (>= x lx) (<, y ly)) (recur gl [x y])
         (and (>= x lx) (>= y ly)) (recur gg [x y])))
     ))
-
-(defn retrieve-stations
-  ([qt] (retrieve-stations qt [-1 -1]))
-  ([qt [x y]]
-    (letfn
-      [(uphill [qt] (qt-children-uphill qt [x y]))]
-      (filter
-        #(let
-           [lx (first %)
-            ly (last %)]
-           (and (>= lx x) (>= lx y) (not= [lx ly] [x y])))
-        (map #(:s %) (tree-seq qt-with-children? uphill qt))))))
 
 ; TODO why don't semplify EVERYTHING into ISeq?
 ; that way I can:
@@ -163,3 +153,45 @@
 ;     (instance? INonStorable x))
 
 ; maybe investigate on this trick http://stackoverflow.com/questions/1976423/nested-types-in-clojure
+
+;(for [x (range 5) y (range 5)] [x y])
+;([0 0] [0 1] [0 2] [0 3] [0 4] [1 0] [1 1] [1 2] [1 3] [1 4] [2 0] [2 1] [2 2] [2 3] [2 4] [3 0] [3 1] [3 2] [3 3] [3 4] [4 0] [4 1] [4 2] [4 3] [4 4])
+
+;(def s1 (shuffle (for [x (range 5) y (range 5)] [x y])))
+;(def q1 (reduce insert-station nil s1))
+
+;(tree-seq
+;  #(not (empty? (.children %)))
+;  #(.children %)
+;  q1)
+
+;(map #(.xy %) (tree-seq
+;                #(not (empty? (.children %)))
+;                #(.uphillchildren % [3 3])
+;                q1))
+
+(defn uphill?
+  [[x y]]
+  (let [rx 3 ry 3]
+    (and (>= x rx) (>= x ry) (not= [x y] [rx ry]))))
+
+(let [qt q1 rx 3 ry 3]
+  (filter uphill?
+    (map
+      #(.xy %) (tree-seq
+                 #(not (empty? (.children %)))
+                 #(.uphillchildren % [rx ry])
+                 qt))))
+
+
+(defn retrieve-stations
+  ([qt] (retrieve-stations qt [-1 -1]))
+  ([qt [x y]]
+    (letfn
+      [(uphill [qt] (qt-children-uphill qt [x y]))]
+      (filter
+        #(let
+           [lx (first %)
+            ly (last %)]
+           (and (>= lx x) (>= lx y) (not= [lx ly] [x y])))
+        (map #(:s %) (tree-seq qt-with-children? uphill qt))))))
