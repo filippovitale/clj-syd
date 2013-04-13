@@ -10,18 +10,16 @@
 
 (set! *warn-on-reflection* true)
 
-;(defn solve
-;  [k]
-;  (let
-;    [k->n (fn [k] (* k k k k k))
-;     n (k->n k)
-;     stations (s2/station-generator n)]
-;    (u/uphill-count stations)))
-
 (defn solve
   [k]
-  (q3/QuadTree. 2 2 nil nil nil nil)
-  )
+  (let
+    [k->n (fn [k] (* k k k k k))
+     n (k->n k)
+     stations (s2/station-generator n)]
+    (u/uphill-count stations)))
+; TODO (def q1 (reduce insert-station nil s1))
+
+
 
 (defn -main [& args]
   (let [[options args banner]
