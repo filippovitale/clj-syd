@@ -178,10 +178,11 @@
 (let [qt q1 rx 3 ry 3]
   (filter uphill?
     (map
-      #(.xy %) (tree-seq
-                 #(not (empty? (.children %)))
-                 #(.uphillchildren % [rx ry])
-                 qt))))
+      #(.xy %)
+      (tree-seq
+        #(not (empty? (.children %)))
+        #(.uphillchildren % [rx ry])
+        qt))))
 
 
 (defn retrieve-stations
