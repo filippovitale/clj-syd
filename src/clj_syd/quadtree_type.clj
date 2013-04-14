@@ -170,19 +170,19 @@
 ;                #(.uphillchildren % [3 3])
 ;                q1))
 
-(defn uphill?
-  [[x y]]
-  (let [rx 3 ry 3]
-    (and (>= x rx) (>= y ry) (not= [x y] [rx ry]))))
-
-(let [qt q1 rx 3 ry 3]
-  (filter uphill?
-    (map
-      #(.xy %)
-      (tree-seq
-        #(not (empty? (.children %)))
-        #(.uphillchildren % [rx ry])
-        qt))))
+;(defn uphill?
+;  [[x y]]
+;  (let [rx 3 ry 3]
+;    (and (>= x rx) (>= y ry) (not= [x y] [rx ry]))))
+;
+;(let [qt q1 rx 3 ry 3]
+;  (filter uphill?
+;    (map
+;      #(.xy %)
+;      (tree-seq
+;        #(not (empty? (.children %)))
+;        #(.uphillchildren % [rx ry])
+;        qt))))
 
 
 (defn retrieve-stations

@@ -1,11 +1,10 @@
 (ns clj-syd.core
-  (:require [clj-syd.quadtree-type :as q3]
-            [clojure.tools.cli :as cli]
+  (:require [clojure.tools.cli :as cli]
             [clojure.pprint :as pp]
             ; [clj-syd.stations-modpow :as s1]
-            ; [clj-syd.stations-modmul :as s2]
-
-            ; [clj-syd.uphill :as u]
+            [clj-syd.stations-modmul :as s2]
+            [clj-syd.quadtree-type :as q3]
+            [clj-syd.uphill :as u]
             ))
 
 (set! *warn-on-reflection* true)
@@ -15,11 +14,23 @@
   (let
     [k->n (fn [k] (* k k k k k))
      n (k->n k)
-     stations (s2/station-generator n)]
-    (u/uphill-count stations)))
-; TODO (def q1 (reduce insert-station nil s1))
+     stations (s2/station-generator n)
+     ; TODO how to stop when duplicates come?
+     ;(defn station-generator
+     ;  "Generate the DISTINCT stations for n"
+     ;  [n]
+     ;  (reduce
+     ;    #(if (q/contain-station? %1 %2)
+     ;       (reduced %1)
+     ;       (q/insert-station %1 %2))
+     ;    q/empty-stations
+     ;    (station-generator-with-duplicates n)))
+     ;(station-generator 22)
+     ;=>  #{[16 15] [1 1] [2 3] [4 9] [6 15] [20 3] [12 1] [10 1] [14 5] [18 9] [8 5]}
 
-
+     quadtree (reduce q3/insert-station nil stations)]
+    ; (u/uphill-count quadtree)))
+    ))
 
 (defn -main [& args]
   (let [[options args banner]
