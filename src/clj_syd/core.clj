@@ -19,18 +19,20 @@
      ;(defn station-generator
      ;  "Generate the DISTINCT stations for n"
      ;  [n]
-     ;  (reduce
-     ;    #(if (q/contain-station? %1 %2)
-     ;       (reduced %1)
-     ;       (q/insert-station %1 %2))
-     ;    q/empty-stations
-     ;    (station-generator-with-duplicates n)))
      ;(station-generator 22)
      ;=>  #{[16 15] [1 1] [2 3] [4 9] [6 15] [20 3] [12 1] [10 1] [14 5] [18 9] [8 5]}
 
-     quadtree (reduce q3/insert-station nil stations)]
-    ; (u/uphill-count quadtree)))
-    ))
+     quadtree
+     ;     (reduce q3/insert-station nil stations)]
+     (reduce
+       #(if (q3/contain-station? %1 %2)
+          (reduced %1)
+          (q3/insert-station %1 %2))
+       nil
+       stations)]
+
+    (u/uphill-count quadtree)))
+;(.xy quadtree)))
 
 (defn -main [& args]
   (let [[options args banner]
