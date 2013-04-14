@@ -18,7 +18,7 @@
              ;"-XX:+UseConcMarkSweepGC"
              ;"-XX:+DisableExplicitGC"
              ]
-  :main clj-syd.core
+  :main clj-syd.one
 ;  :run-aliases {:aaa aaa
 ;                :bbb bbb}
   )
