@@ -14,6 +14,12 @@
 
 
 (defn -main [& args]
-  (time
-    (take 11 (station-generator 22)) ;clojure.lang.LazySeq
-    ))
+  (let
+    [k (or (first args) "2")
+     k->n (fn [k] (* k k k k k))
+     n (k->n (Integer. ^String k))]
+    (time
+      (printf "k=%s n=%d stations=%s\n" k n
+        (into ()
+          (take 13 (station-generator n)) ;clojure.lang.LazySeq
+        )))))
