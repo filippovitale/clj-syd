@@ -211,3 +211,6 @@
 ;            ly (last %)]
 ;           (and (>= lx x) (>= lx y) (not= [lx ly] [x y])))
 ;        (map #(:s %) (tree-seq qt-with-children? uphill qt))))))
+
+; check how they built this:
+; https://github.com/magomimmo/cljs-priority-map/blob/master/src/cljs/tailrecursion/priority_map.cljs
