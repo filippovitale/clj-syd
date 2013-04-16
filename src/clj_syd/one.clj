@@ -22,6 +22,11 @@
 (def t22
   (into (sorted-map) s22))
 
+(def i1
+  (list
+    [1 1] [1 2] [1 3]
+    [2 4] [2 5] [2 6]))
+
 ;(def t22
 ;  (reduce
 ;    #(if (q3/contain-station? %1 %2)
@@ -43,8 +48,6 @@
 ;=> {2 #{4 5 6}, 1 #{1 2 3}}
 ;(filter #(> (key %) 1) (mergeMatches in))
 ;=> ([2 #{4 5 6}])
-
-
 
 (defn -main [& args]
   (let
