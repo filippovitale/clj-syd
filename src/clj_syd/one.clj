@@ -86,3 +86,57 @@
 ;  (if (instance? clojure.lang.IEditableCollection to)
 ;    (with-meta (persistent! (reduce conj! (transient to) from)) (meta to))
 ;    (reduce conj to from)))
+
+
+
+;user=> (def g22 (into (sorted-map) (group-by #(first %) s22)))
+;#'user/g22
+;user=> (filter #(> (key %) 13) g22)
+;([14 [[14 5]]] [16 [[16 15]]] [18 [[18 9]]] [20 [[20 3]]])
+
+(defn list-of-xy->sorted-map-of-sorted-sets [list-of-xy]
+  "Take a list (or lazy-seq) of 2-tuple and return a sorted-map of sorted-sets"
+  (reduce ????? list-of-xy))
+
+(def in
+  '([1 9] [1 8] [1 7]
+     [2 1] [2 2] [2 3]
+     [2 1] [2 2] [2 3]
+     [2 1] [2 2] [2 3]))
+
+(def out
+  (into (sorted-map)
+    {1 (sorted-set 9 8 7)
+     2 (sorted-set 1 2 3)}))
+;(type out)
+;=> clojure.lang.PersistentTreeMap
+;(type (out 1))
+;=> clojure.lang.PersistentTreeSet
+
+(def int1
+  ;(into (sorted-map)
+    (group-by #(first %) in));)
+;=> { 1 [[1 9] [1 8] [1 7]],
+;     2 [[2 1] [2 2] [2 3] [2 1] [2 2] [2 3] [2 1] [2 2] [2 3]]}
+
+(def int2
+    (flatten
+      (map
+        #(let [[x xys] %]
+           (list x (sorted-set (map last xys))))
+        int1)))
+;=> (1 #{7 8 9} 2 #{1 2 3})
+
+
+(def int1
+  ;(into (sorted-map)
+  (group-by #(first %) in));)
+;=> { 1 [[1 9] [1 8] [1 7]],
+;     2 [[2 1] [2 2] [2 3] [2 1] [2 2] [2 3] [2 1] [2 2] [2 3]]}
+
+(def out1
+  (flatten
+    (map
+      #(let [[x xys] %]
+         (list x (sorted-set (map last xys))))
+      (group-by #(first %) in))))
