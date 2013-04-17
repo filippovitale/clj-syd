@@ -12,18 +12,14 @@
         (mod (* 3 y) n)])
     [1 1]))
 
-(defn station-structure
-  [stations]
-  (into (sorted-map)
-    (map (fn [[k v]]
-           [k (apply sorted-set (map second v))])
-      (group-by first stations))))
-
-
-(defn station-structure-using-reduce [list-of-xy]
+(defn station-structure-using-reduced [list-of-xy]
   (let [conj (fnil conj (sorted-set))]
-    (reduce (fn [acc [x y]]
-              (update-in acc [x] conj y))
+    (reduce (fn [a [x y]]
+              ;(if-not (and (a x) (contains? (a x) y)) ; how this is faster?
+              ; TODO if-let + get + contains?
+              (if-not (get-in a [x y])
+                (update-in a [x] conj y)
+                (reduced a)))
       (sorted-map)
       list-of-xy)))
 
@@ -35,7 +31,7 @@
      s (into () (take (* 2 n) (station-generator n)))]
     (time
       (printf "k=%s n=%d stations-x=%d\n" k n
-        (count (station-structure s))
+        (count (station-structure-using-reduced s))
         ;(count (station-structure-using-reduce s))
         ))))
 
@@ -45,31 +41,7 @@
 ;  (key)
 ;  (time))
 
-;(def s22
-;  (into ()
-;    (take 13 (station-generator 22)) ;clojure.lang.LazySeq
-;    ))
-
-; http://stackoverflow.com/questions/2203213/merge-list-of-maps-and-combine-values-to-sets-in-clojure
-; http://clj-me.cgrand.net/2009/06/08/linear-interpolation-and-sorted-map/
-;(def t22
-;  (into (sorted-map) s22))
-;
-;(def i1
-;  (list
-;    [1 1] [1 2] [1 3]
-;    [2 4] [2 5] [2 6]))
-
-;(def t22
-;  (reduce
-;    #(if (q3/contain-station? %1 %2)
-;       (reduced %1)
-;       (q3/insert-station %1 %2))
-;    nil
-;    stations))
-
-
-; then for the alghorytm:
+; then for the algorythm:
 ; http://clojuredocs.org/clojure_core/clojure.core/subseq
 
 ;(def in
@@ -100,18 +72,6 @@
 ;(time (def v2 (vrange2 1000000)))
 ;"Elapsed time: 34.428 msecs"
 
-;(defn into
-;  "Returns a new coll consisting of to-coll with all of the items of
-;  from-coll conjoined."
-;  {:added "1.0"
-;   :static true}
-;  [to from]
-;  (if (instance? clojure.lang.IEditableCollection to)
-;    (with-meta (persistent! (reduce conj! (transient to) from)) (meta to))
-;    (reduce conj to from)))
-
-
-
 ;user=> (def g22 (into (sorted-map) (group-by #(first %) s22)))
 ;#'user/g22
 ;user=> (filter #(> (key %) 13) g22)
@@ -135,3 +95,18 @@
 ;=> clojure.lang.PersistentTreeMap
 ;(type (out 1))
 ;=> clojure.lang.PersistentTreeSet
+
+; these are not working with infinite sequences
+;(defn station-structure
+;[stations]
+;(into (sorted-map)
+;  (map (fn [[k v]]
+;         [k (apply sorted-set (map second v))])
+;    (group-by first stations))))
+;
+;(defn station-structure-using-reduce [list-of-xy]
+;  (let [conj (fnil conj (sorted-set))]
+;    (reduce (fn [acc [x y]]
+;              (update-in acc [x] conj y))
+;      (sorted-map)
+;      list-of-xy)))
