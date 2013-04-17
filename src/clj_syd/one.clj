@@ -16,10 +16,16 @@
   (let [conj (fnil conj (sorted-set))]
     (reduce
       (fn [a [x y]]
-        ;(if-not (and (a x) (contains? (a x) y)) ; how this is faster?
         (if-not (get-in a [x y])
           (update-in a [x] conj y)
           (reduced a))) ;)
+
+      ; TODO don't know why it is not working
+      ;(update-in (sorted-map) [1] conj (int 1))
+      ;(update-in (sorted-map) [1] conj 1)
+      ;(into (sorted-map) {1 (sorted-set 1)})
+      ;(drop 1 list-of-xy))))
+
       (sorted-map)
       list-of-xy)))
 
@@ -30,7 +36,7 @@
      n (k->n k)
      s (into () (take (* 2 n) (station-generator n)))]
     (time
-      (printf "k=%s n=%d stations-x=%d\n" k n
+      (printf "k=%s n=%d stations-x=%s\n" k n
         (count (station-structure-using-reduced s))
         ))))
 
