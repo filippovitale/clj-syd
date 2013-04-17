@@ -14,12 +14,12 @@
 
 (defn station-structure-using-reduced [list-of-xy]
   (let [conj (fnil conj (sorted-set))]
-    (reduce (fn [a [x y]]
-              ;(if-not (and (a x) (contains? (a x) y)) ; how this is faster?
-              ; TODO if-let + get + contains?
-              (if-not (get-in a [x y])
-                (update-in a [x] conj y)
-                (reduced a)))
+    (reduce
+      (fn [a [x y]]
+        ;(if-not (and (a x) (contains? (a x) y)) ; how this is faster?
+        (if-not (get-in a [x y])
+          (update-in a [x] conj y)
+          (reduced a))) ;)
       (sorted-map)
       list-of-xy)))
 
@@ -32,7 +32,6 @@
     (time
       (printf "k=%s n=%d stations-x=%d\n" k n
         (count (station-structure-using-reduced s))
-        ;(count (station-structure-using-reduce s))
         ))))
 
 ;(->> (for [x (range 1e3) y (range 1e3)] [x y])
