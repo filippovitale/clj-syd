@@ -36,6 +36,17 @@
 ; s is ordered but it is NOT a set!!!
 ;(into (vector-of :int) [])
 
+(def in '[1 2 3 4 9 18])
+(def out '[1 2 3 4 6 18])
+
+(defn aaa
+  [coll y]
+  (let [i ???]
+  (subvec 0 i)
+    ))
+
+; try (reduce conj (subvec in 0 4) (subvec in 5)) ; ? (into (vector-of :int) int(6))
+; try (into (subvec in 0 4) (subvec in 5)) ; ? (into (vector-of :int) int(6))
 
 (defn -main [& args]
   (let
