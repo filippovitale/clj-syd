@@ -29,6 +29,9 @@
       (sorted-map)
       list-of-xy)))
 
+(defn algo
+  (println "TODO")) ; TODO
+
 (defn -main [& args]
   (let
     [k (Integer. ^String (or (first args) "2"))
