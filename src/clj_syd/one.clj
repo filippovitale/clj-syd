@@ -31,6 +31,11 @@
 
 (defn algo
   (println "TODO")) ; TODO
+;(if (subseq s > 7) "Y" (conj s 7))
+;(if-not (subseq s > 3) (conj s 7) "SUB")
+; s is ordered but it is NOT a set!!!
+;(into (vector-of :int) [])
+
 
 (defn -main [& args]
   (let
