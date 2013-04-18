@@ -39,11 +39,23 @@
 (def in '[1 2 3 4 9 18])
 (def out '[1 2 3 4 6 18])
 
-(defn aaa
+(= (assoc-in in [4] 6) out) ; true
+
+;(count (filter #(> 6 %) in))
+;=> 4
+
+(= (assoc-in in [(count (filter #(> 6 %) in))] 6) out) ; true
+
+;(assoc-in '[1 2 3 4] [4] 6) ; !!!!! after the end of vec!!!!
+;[1 2 3 4 6]
+
+(defn update-right
   [coll y]
-  (let [i ???]
-  (subvec 0 i)
+  ; TODO find a more efficient (*BISECT*) way to -> (count (filter #(>= y %) in))
+  (let [i (count (filter #(>= y %) in))]
+    (assoc-in in [i] y)
     ))
+; TODO test extensively!!!!!!
 
 ; try (reduce conj (subvec in 0 4) (subvec in 5)) ; ? (into (vector-of :int) int(6))
 ; try (into (subvec in 0 4) (subvec in 5)) ; ? (into (vector-of :int) int(6))
