@@ -29,47 +29,39 @@
       (sorted-map)
       list-of-xy)))
 
-(defn algo
-  (println "TODO")) ; TODO
-;(if (subseq s > 7) "Y" (conj s 7))
-;(if-not (subseq s > 3) (conj s 7) "SUB")
-; s is ordered but it is NOT a set!!!
-;(into (vector-of :int) [])
-
-(def in '[1 2 3 4 9 18])
-(def out '[1 2 3 4 6 18])
-
-(= (assoc-in in [4] 6) out) ; true
-
-;(count (filter #(> 6 %) in))
-;=> 4
-
-(= (assoc-in in [(count (filter #(> 6 %) in))] 6) out) ; true
-
-;(assoc-in '[1 2 3 4] [4] 6) ; !!!!! after the end of vec!!!!
-;[1 2 3 4 6]
-
 (defn update-right
   [coll y]
   ; TODO find a more efficient (*BISECT*) way to -> (count (filter #(>= y %) in))
-  (let [i (count (filter #(>= y %) in))]
-    (assoc-in in [i] y)
+  (let [i (count (filter #(>= y %) coll))]
+    (assoc-in coll [i] y)
     ))
-; TODO test extensively!!!!!!
 
-; try (reduce conj (subvec in 0 4) (subvec in 5)) ; ? (into (vector-of :int) int(6))
-; try (into (subvec in 0 4) (subvec in 5)) ; ? (into (vector-of :int) int(6))
+(defn fff
+  [n])
+
+(defn algo
+  [n]
+  (count
+    (reduce
+      update-right
+      (vector-of :int ) ; same as []
+      (fff
+        (station-structure-using-reduced
+        (station-generator n))))))
+
+;(vals (station-structure-using-reduced
+;        (station-generator n)))
+;(#{1} #{3} #{9} #{15} #{5} #{1} #{1} #{5} #{15} #{9} #{3})
 
 (defn -main [& args]
   (let
     [k (Integer. ^String (or (first args) "2"))
      k->n (fn [k] (* k k k k k))
-     n (k->n k)
-     s (into () (take (* 2 n) (station-generator n)))]
+     n (k->n k)]
+    ;s (into () (take (* 2 n) (station-generator n)))]
     (time
-      (printf "k=%s n=%d stations-x=%s\n" k n
-        (count (station-structure-using-reduced s))
-        ))))
+      (printf "k=%s n=%d stations-x=%d\n" k n
+        (count (algo n))))))
 
 ;(->> (for [x (range 1e3) y (range 1e3)] [x y])
 ;  (station-structure)
@@ -146,3 +138,17 @@
 ;              (update-in acc [x] conj y))
 ;      (sorted-map)
 ;      list-of-xy)))
+
+;(def in '[1 2 3 4 9 18])
+;(def out '[1 2 3 4 6 18])
+;
+;(= (assoc-in in [4] 6) out) ; true
+;
+;;(count (filter #(> 6 %) in))
+;;=> 4
+;
+;(= (assoc-in in [(count (filter #(> 6 %) in))] 6) out) ; true
+;
+;;(assoc-in '[1 2 3 4] [4] 6) ; !!!!! after the end of vec!!!!
+;;[1 2 3 4 6]
+;
