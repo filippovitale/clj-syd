@@ -37,17 +37,19 @@
     ))
 
 (defn fff
-  [n])
+  [coll]
+  vals coll)
 
-(defn algo
+(defn solve
   [n]
   (count
     (reduce
       update-right
       (vector-of :int ) ; same as []
-      (fff
-        (station-structure-using-reduced
-        (station-generator n))))))
+      (reduce into [] ; TODO maybe double cycle?
+        (vals
+          (station-structure-using-reduced
+            (station-generator n)))))))
 
 ;(vals (station-structure-using-reduced
 ;        (station-generator n)))
@@ -61,7 +63,7 @@
     ;s (into () (take (* 2 n) (station-generator n)))]
     (time
       (printf "k=%s n=%d stations-x=%d\n" k n
-        (count (algo n))))))
+        (solve n)))))
 
 ;(->> (for [x (range 1e3) y (range 1e3)] [x y])
 ;  (station-structure)
