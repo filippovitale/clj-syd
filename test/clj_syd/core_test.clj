@@ -37,13 +37,13 @@
     (is (= 57629 (unique-stations 537824)))
     (is (= 202505 (unique-stations 759375)))
     (is (= 262164 (unique-stations 1048576)))
-    (is (= 1336336 (unique-stations 1419857)))))
+    (is (= 1336336 (unique-stations 1419857)))
+    (is (= 157474 (unique-stations 1889568)))
+    (is (= 2345778 (unique-stations 2476099)))
+    (is (= 160010 (unique-stations 3200000)))))
 
 ;(deftest generate-stations-k18->30-test
 ;(testing
-; (is (= 157474 (unique-stations 1889568)))
-; (is (= 2345778 (unique-stations 2476099)))
-; (is (= 160010 (unique-stations 3200000)))
 ; (is (= 388967 (unique-stations 4084101)))
 ; (is (= 585645 (unique-stations 5153632)))
 ; (is (= 3078251 (unique-stations 6436343)))

@@ -1,8 +1,0 @@
-;;; it would make sense to use assoc / assoc-in / update-in instead of building new maps:
-http://clojuredocs.org/clojure_core/clojure.core/update-in
-
-http://liebke.github.com/incanter/charts-api.html
-add-points
-add-lines
-
-http://incanter.org/docs/api/#member-incanter.charts-scatter-plot
