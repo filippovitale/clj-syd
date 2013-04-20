@@ -46,5 +46,5 @@
      k->n (fn [k] (* k k k k k))
      n (k->n k)]
     (time
-      (printf "k=%s n=%d stations-x=%d\n" k n
+      (printf "k=%s n=%d uphill=%d\n" k n
         (solve n)))))
