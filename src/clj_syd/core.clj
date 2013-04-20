@@ -1,14 +1,16 @@
-(ns clj-syd.one)
+(ns clj-syd.core)
 
 (defn station-generator
   "Infinite Station Generator"
   [n]
-  (iterate
-    #(let
-       [[x y] %]
-       [(mod (* 2 x) n)
-        (mod (* 3 y) n)])
-    [1 1]))
+  (if (= n 1)
+    (cycle [[0 0]])
+    (iterate
+      #(let
+         [[x y] %]
+         [(mod (* 2 x) n)
+          (mod (* 3 y) n)])
+      [1 1])))
 
 (defn station-structure-using-reduced [list-of-xy]
   (let [conj (fnil conj (sorted-set))]

@@ -4,7 +4,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [org.clojure/tools.cli "0.2.2"]
+                 ;[org.clojure/tools.cli "0.2.2"]
                  ;[org.clojure/clojure-contrib "1.5.1"]
                  ;[clj-quad "0.1.0-beta"]
                  ;[org.clojure/tools.trace "0.7.5"]
@@ -18,7 +18,5 @@
              ;"-XX:+UseConcMarkSweepGC"
              ;"-XX:+DisableExplicitGC"
              ]
-  :main clj-syd.one
-;  :run-aliases {:aaa aaa
-;                :bbb bbb}
+  :main clj-syd.core
   )
