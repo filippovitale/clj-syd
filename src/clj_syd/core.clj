@@ -1,4 +1,5 @@
-(ns clj-syd.core)
+(ns clj-syd.core
+  (:require [clojure.core.reducers :as r]))
 
 (defn station-generator
   "Infinite Station Generator"
@@ -14,14 +15,13 @@
 
 (defn station-structure-using-reduced [list-of-xy]
   (let [conj (fnil conj (sorted-set))]
-    (time
-      (reduce
-        (fn [a [x y]]
-          (if-not (get-in a [x y])
-            (update-in a [x] conj y)
-            (reduced a))) ;)
-        (sorted-map)
-        list-of-xy))))
+    (reduce
+      (fn [a [x y]]
+        (if-not (get-in a [x y])
+          (update-in a [x] conj y)
+          (reduced a))) ;)
+      (sorted-map)
+      list-of-xy)))
 
 (defn update-right
   [coll y]
@@ -41,10 +41,8 @@
             (station-generator n)))))))
 
 (defn -main [& args]
-  (let
+  (time (let
     [k (Integer. ^String (or (first args) "7"))
      k->n (fn [k] (* k k k k k))
      n (k->n k)]
-    (time
-      (printf "k=%s n=%d uphill=%d\n" k n
-        (solve n)))))
+    (reduce + (map solve (map k->n (range 1 (inc k))))))))

@@ -8,6 +8,7 @@
                  ;[org.clojure/clojure-contrib "1.5.1"]
                  ;[clj-quad "0.1.0-beta"]
                  ;[org.clojure/tools.trace "0.7.5"]
+                 ;[incanter "1.2.2"]
                  [perforate "0.2.4"]]
   :plugins [[perforate "0.2.4"]]
   :profiles {:clj1.5 {:dependencies [[org.clojure/clojure "1.5.1"]]}}
