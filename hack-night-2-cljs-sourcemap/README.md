@@ -1,6 +1,9 @@
-# clj-syd Hack night 23 Sep 2013
+# clj-syd Hack night 26 Sep 2013
 
 clj-syd Hack night code
+
+## Steps
+* ```lein new modern-cljs```
 
 ## License
 
