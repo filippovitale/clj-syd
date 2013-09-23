@@ -27,6 +27,8 @@ clj-syd Hack night code
 * ```resources/public/simple.html```
 * ```lein cljsbuild once```
 * ```lein trampoline cljsbuild repl-listen```
+* ```(.log js/console "clj-syd")```
+* ```modern-cljs\resources\public>python -m SimpleHTTPServer 8888```
 
 ## License
 
