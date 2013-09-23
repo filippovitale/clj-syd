@@ -25,6 +25,8 @@ clj-syd Hack night code
 ```
 * ```src/cljs/modern_cljs/modern.cljs```
 * ```resources/public/simple.html```
+* ```lein cljsbuild once```
+* ```lein trampoline cljsbuild repl-listen```
 
 ## License
 

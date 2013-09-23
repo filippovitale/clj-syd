@@ -17,5 +17,5 @@
       :compiler {:optimizations :advanced
                 :pretty-print false
                 :output-dir "resources/public/js"
-                :output-to "modern.js"
-                :source-map "modern.js.map"}}]})
+                :output-to "resources/public/js/modern.js"
+                :source-map "resources/public/js/modern.js.map"}}]})
