@@ -23,6 +23,7 @@ clj-syd Hack night code
                 :output-to "modern.js"
                 :source-map "modern.js.map"}}]})
 ```
+* ```src/cljs/modern_cljs/modern.cljs```
 
 ## License
 
