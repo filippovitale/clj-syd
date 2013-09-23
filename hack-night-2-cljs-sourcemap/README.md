@@ -4,6 +4,7 @@ clj-syd Hack night code
 
 ## Steps
 * ```lein new modern-cljs```
+* Ctrl-Shift-N in explorer
 
 ## License
 
