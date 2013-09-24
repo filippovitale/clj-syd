@@ -30,6 +30,13 @@ clj-syd Hack night code
 * ```(.log js/console "clj-syd")```
 * ```modern-cljs\resources\public>python -m SimpleHTTPServer 8888```
 
+
+## Resources
+* https://github.com/magomimmo/modern-cljs/blob/master/doc/tutorial-01.md
+* ```//@``` is deprecated. ```//#``` should be used https://codereview.chromium.org/15832007
+* Introduction to sourcemap (21 March 2012) http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
+* Source Maps 101 Tutorial (16 Jan 2013) http://net.tutsplus.com/tutorials/tools-and-tips/source-maps-101/
+
 ## License
 
 Copyright © 2013
