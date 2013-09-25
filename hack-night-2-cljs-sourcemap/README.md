@@ -3,9 +3,24 @@
 clj-syd Hack night code
 
 ## Steps
-* ```lein new modern-cljs```
-* Ctrl-Shift-N in explorer
-* update the ```project.clj``` with:
+* `lein new modern-cljs`
+* create missing folders
+```
+  +-- doc
+  +-- resources
+  ¦   +-- public
+  ¦       +-- css
+  ¦       +-- js
+  +-- src
+  ¦   +-- clj
+  ¦   ¦   +-- modern_cljs
+  ¦   +-- cljs
+  ¦       +-- modern_cljs
+  +-- test
+      +-- modern_cljs
+```
+
+* update the `project.clj` with:
 ```
   :source-paths ["src/clj"]
   :dependencies [[org.clojure/clojure "1.5.1"]
@@ -23,12 +38,13 @@ clj-syd Hack night code
                 :output-to "modern.js"
                 :source-map "modern.js.map"}}]})
 ```
-* ```src/cljs/modern_cljs/modern.cljs```
-* ```resources/public/simple.html```
-* ```lein cljsbuild once```
-* ```lein trampoline cljsbuild repl-listen```
-* ```(.log js/console "clj-syd")```
-* ```modern-cljs\resources\public>python -m SimpleHTTPServer 8888```
+
+* `src/cljs/modern_cljs/modern.cljs`
+* `resources/public/simple.html`
+* `lein cljsbuild once`
+* `lein trampoline cljsbuild repl-listen`
+* `(.log js/console "clj-syd")`
+* `modern-cljs\resources\public>python -m SimpleHTTPServer 8888`
 
 
 ## Resources
@@ -39,5 +55,5 @@ clj-syd Hack night code
 
 ## License
 
-Copyright � 2013
+Copyright � 2013
 Distributed under the Eclipse Public License, the same as Clojure.
