@@ -1,0 +1,16 @@
+{"version":3,
+ "file":"modern.js.map",
+ "sources":
+ ["modern.cljs", "cljs/core.js",
+  "file:/C:/Users/filippo/.m2/repository/org/clojure/google-closure-library/0.0-20130212-95c19e7f0f5f/google-closure-library-0.0-20130212-95c19e7f0f5f.jar!/goog/base.js",
+  "file:/C:/Users/filippo/.m2/repository/org/clojure/google-closure-library/0.0-20130212-95c19e7f0f5f/google-closure-library-0.0-20130212-95c19e7f0f5f.jar!/goog/string/string.js",
+  "file:/C:/Users/filippo/.m2/repository/org/clojure/google-closure-library/0.0-20130212-95c19e7f0f5f/google-closure-library-0.0-20130212-95c19e7f0f5f.jar!/goog/debug/error.js",
+  "file:/C:/Users/filippo/.m2/repository/org/clojure/google-closure-library/0.0-20130212-95c19e7f0f5f/google-closure-library-0.0-20130212-95c19e7f0f5f.jar!/goog/asserts/asserts.js",
+  "file:/C:/Users/filippo/.m2/repository/org/clojure/google-closure-library/0.0-20130212-95c19e7f0f5f/google-closure-library-0.0-20130212-95c19e7f0f5f.jar!/goog/array/array.js",
+  "file:/C:/Users/filippo/.m2/repository/org/clojure/google-closure-library/0.0-20130212-95c19e7f0f5f/google-closure-library-0.0-20130212-95c19e7f0f5f.jar!/goog/object/object.js",
+  "file:/C:/Users/filippo/.m2/repository/org/clojure/google-closure-library/0.0-20130212-95c19e7f0f5f/google-closure-library-0.0-20130212-95c19e7f0f5f.jar!/goog/string/stringbuffer.js",
+  "constants_table.js"],
+ "lineCount":3,
+ "mappings":
+ "AAEAA,QAAAC,MAAA,wBAAA,vBAAe,wBACfC,QAAAC,IAAA,UAAA,TAAY",
+ "names":["document", "write", "console", "log"]}
