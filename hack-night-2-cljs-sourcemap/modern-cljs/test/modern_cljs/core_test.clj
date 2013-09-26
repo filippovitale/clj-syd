@@ -1,6 +1,6 @@
 (ns modern-cljs.core-test
-  (:use clojure.test
-        modern-cljs.core))
+  (:require [clojure.test :refer :all]
+            [modern-cljs.core :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."
